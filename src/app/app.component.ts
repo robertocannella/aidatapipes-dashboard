@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import * as d3 from 'd3';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 
 
 @Component({
@@ -187,10 +187,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // data and firestore
   getData() {
-    this.subs$ = this.firestore.collection('datapipes').snapshotChanges().subscribe((res: any) => {
+    // StateChanges allows use of added|modified|removed
+    this.subs$ = this.firestore.collection('datapipes').stateChanges().pipe(map((res: any) => {
       res.forEach((change: any) => {
         const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
 
+        console.log(change.type)
         switch (change.type) {
           case 'added':
             this.data.push(doc)
@@ -207,6 +209,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
       this.update(this.data);
-    });
+    })
+    ).subscribe()
   }
 }
