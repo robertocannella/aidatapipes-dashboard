@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, Host, OnDestroy, OnInit } from '@angular/core';
+import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
 import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
+import { HostListener } from "@angular/core";
 
 
 @Component({
@@ -10,6 +11,7 @@ import { map, Subscription } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
+
   title = 'ai-datapipes';
   public data: any[] = [];
   public activity = 'sensor1';
@@ -22,14 +24,38 @@ export class AppComponent implements OnInit, OnDestroy {
   public yLine: any;
   public dottedLines: any;
   public subs$: any;
+  public dateData: any;
+  public currentLookBack: any;
   //items: Observable<any[]>;
   constructor(public firestore: AngularFirestore) {
     //this.items = firestore.collection('datapipes').valueChanges();
-
   }
+  // @HostListener('window:scroll', ['$event'])
+  // onWindowScroll(event?: any) {
+  //   console.log(event)
+  //   if (window.scrollX == 0) {
+  //     //this.graph.nodes()[0].setAttribute("transform", "translate(200, " + 10 + ")")
+  //   }
+  //   if (window.scrollX > 0) {
+  //     console.log(window.scrollX)
+  //     this.path.attr(`transform, translate(${window.scrollX},0)`)
+  //   }
+  // }
+  // @HostListener('window:touchmove', ['$event'])
+  // onTouchMove(event?: any) {
+  //   console.log(event)
+  //   if (window.scrollX == 0) {
+  //     //this.graph.nodes()[0].setAttribute("transform", "translate(200, " + 10 + ")")
+  //   }
+  //   if (window.scrollX > 0) {
+  //     console.log(window.scrollX)
+  //     this.path.attr(`transform, translate(${window.scrollX},0)`)
+  //   }
+  // }
   ngOnInit() {
     this.buildSVG();
-    this.getData();
+    // this.getData();
+    this.getByDate(7);
   }
 
   // Margins + Dimensions
@@ -157,7 +183,6 @@ export class AppComponent implements OnInit, OnDestroy {
             console.log(new Date(d.timeStamp.seconds * 1000))
           })
 
-
       })
     // remove 
     circles.exit().remove();
@@ -168,7 +193,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .tickFormat((d: any) => (new Date(d * 1000).getMonth() + 1) + '/' + new Date(d * 1000).getDate().toString());
     const yAxis = d3.axisLeft(this.yScale)
       .ticks(10)
-      .tickFormat(d => d + 'F');
+      .tickFormat(d => d + ' °F');
 
 
     // call the axes
@@ -186,30 +211,82 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   // data and firestore
+  async getByDate(daysAgo: number) {
+    //Get today's date using the JavaScript Date object.
+    const numberOfDays = this.getDaysAgo(new Date(), daysAgo);
+    this.currentLookBack = numberOfDays;
+    this.dateData = this.firestore.collection('datapipes', (ref: any | undefined) => ref.where('timeStamp', '>', numberOfDays))
+      .stateChanges().pipe(map((res: any) => {
+        res.forEach((change: any) => {
+          const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
+
+          console.log(change.type)
+          switch (change.type) {
+            case 'added':
+              this.data.push(doc)
+              break;
+            case 'modified':
+              const index = this.data.findIndex((item) => item.id == doc.id) // get the item from data []
+              this.data[index] = doc; // overwrite old element with the modified one
+              break;
+            case 'removed':
+              this.data = this.data.filter((item) => item.id !== doc.id) // filter out the removed element as new array
+              break;
+            default: // default case required
+              break;
+          }
+        });
+        this.update(this.data);
+      })
+      ).subscribe()
+
+    //   .get()
+    //   .then((snapshot: any) => {
+    //     console.log(snapshot)
+    //     var jsonvalue: any[] = [];
+    //     snapshot.forEach((docs: any) => {
+    //       jsonvalue.push(docs.data())
+    //     })
+    //     console.log(jsonvalue);
+    //     return;
+    //   }).catch((error: any) => {
+    //     console.log(error)
+    //   })
+    // );
+  }
   getData() {
     // StateChanges allows use of added|modified|removed
-    this.subs$ = this.firestore.collection('datapipes').stateChanges().pipe(map((res: any) => {
-      res.forEach((change: any) => {
-        const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
+    this.subs$ = this.firestore.collection('datapipes')
+      .stateChanges().pipe(map((res: any) => {
+        res.forEach((change: any) => {
+          const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
 
-        console.log(change.type)
-        switch (change.type) {
-          case 'added':
-            this.data.push(doc)
-            break;
-          case 'modified':
-            const index = this.data.findIndex((item) => item.id == doc.id) // get the item from data []
-            this.data[index] = doc; // overwrite old element with the modified one
-            break;
-          case 'removed':
-            this.data = this.data.filter((item) => item.id !== doc.id) // filter out the removed element as new array
-            break;
-          default: // default case required
-            break;
-        }
-      });
-      this.update(this.data);
-    })
-    ).subscribe()
+          console.log(change.type)
+          switch (change.type) {
+            case 'added':
+              this.data.push(doc)
+              break;
+            case 'modified':
+              const index = this.data.findIndex((item) => item.id == doc.id) // get the item from data []
+              this.data[index] = doc; // overwrite old element with the modified one
+              break;
+            case 'removed':
+              this.data = this.data.filter((item) => item.id !== doc.id) // filter out the removed element as new array
+              break;
+            default: // default case required
+              break;
+          }
+        });
+        this.update(this.data);
+      })
+      ).subscribe()
   }
+
+
+
+  getDaysAgo(date: Date, days: number) {
+    var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+    return pastDate;
+  }
+
 }

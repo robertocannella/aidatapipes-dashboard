@@ -21,6 +21,12 @@
   form span{
     color: #00bfa5 !important;
   }
+  
+  .canvas{
+    text-align: center;
+   // max-width: 100vw;
+    overflow-x: visible;
+  }
   .x-axis path, .y-axis path,
   .x-axis line, .y-axis line{
     stroke: #CCC;
@@ -29,3 +35,4 @@
     fill: #CCC;
     font-size: 14px;
   }
+ 
