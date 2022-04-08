@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomed(event: any) {
     let vectorPan = event.transform;
     d3.select('.graph')
-      .selectAll('.x-axis,.line-datang')
+      .selectAll('.x-axis,.line-data')
       .attr('transform', `translate(${vectorPan.x})`)
     d3.select('.x-axis')
       .attr('transform', `translate(${vectorPan.x},${this.graphHeight})`)
@@ -110,11 +110,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
 
 
-    this.xAxisGroup = this.graph.append('g')
-      .attr('class', 'x-axis')
-      .attr('transform', `translate(0,${this.graphHeight})`) // origin of axis is on top, translate to bottom
-    this.yAxisGroup = this.graph.append('g')
-      .attr('class', 'y-axis')
+
 
     // line path element
     this.path = this.graph.append('path');
@@ -223,6 +219,21 @@ export class AppComponent implements OnInit, OnDestroy {
     // remove 
     circles.exit().remove();
 
+
+    // Create Axis Group in Update for Z-indexing
+    this.xAxisGroup = this.graph.append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0,${this.graphHeight})`) // origin of axis is on top, translate to bottom
+    this.yAxisGroup = this.graph.append('g')
+      .attr('class', 'y-axis')
+
+    this.yAxisGroup
+      .append('rect')
+      .attr('x', -100)
+      .attr('y', 0)
+      .attr('width', 100)
+      .attr('height', this.graphHeight)
+      .attr('fill', '#212121')
     // create the axes
     const xAxis = d3.axisBottom(this.xScale)
       .ticks(10)
@@ -241,6 +252,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.xAxisGroup.selectAll('text')
       .attr('transform', `rotate(-40)`)
       .attr('text-anchor', 'end');
+
   }
   ngOnDestroy() {
     this.subs$.unsubscribe()
@@ -322,5 +334,6 @@ export class AppComponent implements OnInit, OnDestroy {
     var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
     return pastDate;
   }
+
 
 }
