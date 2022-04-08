@@ -26,6 +26,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public subs$: any;
   public dateData: any;
   public currentLookBack: any;
+  d3zoom = d3.zoom<SVGSVGElement, unknown>();
+
   //items: Observable<any[]>;
   constructor(public firestore: AngularFirestore) {
     //this.items = firestore.collection('datapipes').valueChanges();
@@ -54,12 +56,27 @@ export class AppComponent implements OnInit, OnDestroy {
   // }
   ngOnInit() {
     this.buildSVG();
-    // this.getData();
-    this.getByDate(7);
+    //this.getData();
+    this.getByDate(.5); // how many days ago
+  }
+  // Pan + Zoom
+  zoomed(event: any) {
+    let vectorPan = event.transform;
+    d3.select('.graph')
+      .selectAll('.x-axis,.line-datang')
+      .attr('transform', `translate(${vectorPan.x})`)
+    d3.select('.x-axis')
+      .attr('transform', `translate(${vectorPan.x},${this.graphHeight})`)
+    d3.select('.dotted-lines')
+      .attr('transform', `translate(${vectorPan.x})`)
+    d3.select('.dots')
+      .attr('transform', `translate(${vectorPan.x})`)
+    d3.selectAll('circle')
+      .attr('transform', `translate(${vectorPan.x})`)
   }
 
   // Margins + Dimensions
-  public margin = { top: 40, right: 20, bottom: 50, left: 100 };
+  public margin = { top: 40, right: 10, bottom: 50, left: 75 };
 
   // graph attributes (not svg)
   public graphWidth = 560 - this.margin.left - this.margin.right; // svg container width
@@ -82,11 +99,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.svg = d3.select('.canvas')
       .append('svg')
       .attr('width', this.graphWidth + this.margin.left + this.margin.right)
-      .attr('height', this.graphHeight + this.margin.left + this.margin.right)
+      .attr('height', this.graphHeight + this.margin.top + this.margin.bottom)
+      .call(this.d3zoom
+        .on("zoom", (event: any) => this.zoomed(event)))
+
     this.graph = this.svg.append('g')
+      .attr('class', 'graph')
       .attr('width', this.graphWidth)
       .attr('height', this.graphHeight)
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
+
 
     this.xAxisGroup = this.graph.append('g')
       .attr('class', 'x-axis')
@@ -103,17 +125,26 @@ export class AppComponent implements OnInit, OnDestroy {
     // create x dotted line and append to dotted line group
     this.xLine = this.dottedLines
       .append('line')
+      .attr('class', 'x-line')
       .attr('stroke-dasharray', '5,5')
       .attr('stroke', '#AAA')
       .attr('stroke-width', 1)
+
     // create y dotted line and append to dotted line group
     this.yLine = this.dottedLines
       .append('line')
+      .attr('class', 'y-line')
       .attr('stroke-dasharray', '5,5')
       .attr('stroke', '#AAA')
       .attr('stroke-width', 1)
+
   }
+
+
+
   update = (data: any) => {
+    this.svg
+
     // filter out irrelevant data
     //data = data.filter((item: any) => item.activity == this.activity)  // keep true
 
@@ -129,6 +160,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('stroke', '#00bfa5') // teal
       .attr('stroke-width', 2)
       .attr('d', this.line)
+      .attr('class', 'line-data')
+
 
     // create points for
     const circles = this.graph.selectAll('circle')
@@ -139,9 +172,12 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('cx', (d: any) => this.xScale(new Date(d.timeStamp.seconds))) // use date a X coord
       .attr('cy', (d: any) => this.yScale(d.temperatureF))  // use distance
 
+
+
     // add new points 
     circles.enter()
       .append('circle')
+      .attr('class', 'dots')
       .attr('r', 4)
       .attr('cx', (d: any) => this.xScale(new Date(d.timeStamp.seconds))) // use date a X coord
       .attr('cy', (d: any) => this.yScale(d.temperatureF))  // use distance
@@ -282,10 +318,8 @@ export class AppComponent implements OnInit, OnDestroy {
       ).subscribe()
   }
 
-
-
   getDaysAgo(date: Date, days: number) {
-    var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+    var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
     return pastDate;
   }
 
