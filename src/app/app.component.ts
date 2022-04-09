@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
   zoomed(event: any) {
     let vectorPan = event.transform;
     d3.select('.graph')
-      .selectAll('.x-axis,.line-data')
+      .selectAll('.x-axis,.line-data,.y-axis')
       .attr('transform', `translate(${vectorPan.x})`)
     d3.select('.x-axis')
       .attr('transform', `translate(${vectorPan.x},${this.graphHeight})`)
@@ -109,11 +109,26 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('height', this.graphHeight)
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
 
+    // Create Axis Group in Update for Z-indexing
+    this.xAxisGroup = this.graph.append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', `translate(0,${this.graphHeight})`) // origin of axis is on top, translate to bottom
+    this.yAxisGroup = this.graph.append('g')
+      .attr('class', 'y-axis')
 
-
+    this.yAxisGroup
+      .append('rect')
+      .attr('x', -100)
+      .attr('y', 0)
+      .attr('width', 100)
+      .attr('height', this.graphHeight)
+      .attr('fill', '#212121')
 
     // line path element
     this.path = this.graph.append('path');
+
+
+
     // create dotted line group and append to the graph
     this.dottedLines = this.graph.append('g')
       .attr('class', 'dotted-lines')
@@ -133,13 +148,11 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('stroke-dasharray', '5,5')
       .attr('stroke', '#AAA')
       .attr('stroke-width', 1)
-
   }
 
 
 
   update = (data: any) => {
-    this.svg
 
     // filter out irrelevant data
     //data = data.filter((item: any) => item.activity == this.activity)  // keep true
@@ -168,8 +181,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('cx', (d: any) => this.xScale(new Date(d.timeStamp.seconds))) // use date a X coord
       .attr('cy', (d: any) => this.yScale(d.temperatureF))  // use distance
 
-
-
     // add new points 
     circles.enter()
       .append('circle')
@@ -179,7 +190,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('cy', (d: any) => this.yScale(d.temperatureF))  // use distance
       .attr('fill', '#CCC')
       .attr('opacity', 0)
-
 
     // handle mouse events
     this.graph.selectAll('circle')
@@ -220,20 +230,6 @@ export class AppComponent implements OnInit, OnDestroy {
     circles.exit().remove();
 
 
-    // Create Axis Group in Update for Z-indexing
-    this.xAxisGroup = this.graph.append('g')
-      .attr('class', 'x-axis')
-      .attr('transform', `translate(0,${this.graphHeight})`) // origin of axis is on top, translate to bottom
-    this.yAxisGroup = this.graph.append('g')
-      .attr('class', 'y-axis')
-
-    this.yAxisGroup
-      .append('rect')
-      .attr('x', -100)
-      .attr('y', 0)
-      .attr('width', 100)
-      .attr('height', this.graphHeight)
-      .attr('fill', '#212121')
     // create the axes
     const xAxis = d3.axisBottom(this.xScale)
       .ticks(10)
@@ -246,7 +242,6 @@ export class AppComponent implements OnInit, OnDestroy {
     // call the axes
     this.xAxisGroup.call(xAxis);
     this.yAxisGroup.call(yAxis);
-
 
     //rotate X axis group
     this.xAxisGroup.selectAll('text')
