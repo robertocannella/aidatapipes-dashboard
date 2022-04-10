@@ -3,6 +3,7 @@ import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
 import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { HostListener } from "@angular/core";
+import { AnyForUntypedForms } from '@angular/forms';
 
 
 @Component({
@@ -14,6 +15,29 @@ export class AppComponent implements OnInit, OnDestroy {
 
   title = 'ai-datapipes';
   public data: any[] = [];
+  public currentDate = new Date();
+  // public tStatData = [
+  //   {
+  //     timeStamp: new Date(this.currentDate.getTime() + -10 * 60000),
+  //     systemOn: true
+  //   },
+  //   {
+  //     timeStamp: new Date(this.currentDate.getTime() + -30 * 60000),
+  //     systemOn: false
+  //   },
+  //   {
+  //     timeStamp: new Date(this.currentDate.getTime() + -50 * 60000),
+  //     systemOn: true
+  //   },
+  //   {
+  //     timeStamp: new Date(this.currentDate.getTime() + -70 * 60000),
+  //     systemOn: false
+  //   },
+
+  // ]
+  public tStatData: any[] = [];
+  public tStatStatus: any;
+  public digitalWave: any;
   public activity = 'sensor1';
   public svg: any;
   public graph: any;
@@ -24,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public yLine: any;
   public dottedLines: any;
   public subs$: any;
+  public tStatData$: any;
   public dateData: any;
   public currentLookBack: any;
   d3zoom = d3.zoom<SVGSVGElement, unknown>();
@@ -57,7 +82,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.buildSVG();
     //this.getData();
-    this.getByDate(.5); // how many days ago
+    this.getByDate(1); // how many days ago
+    this.getTstatStatus();
+    console.log(this.tStatData)
   }
   // Pan + Zoom
   zoomed(event: any) {
@@ -73,6 +100,9 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(${vectorPan.x})`)
     d3.selectAll('circle')
       .attr('transform', `translate(${vectorPan.x})`)
+    d3.selectAll('.tstat-status')
+      .attr('transform', `translate(${vectorPan.x})`)
+
   }
 
   // Margins + Dimensions
@@ -128,11 +158,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.path = this.graph.append('path');
 
 
-
     // create dotted line group and append to the graph
     this.dottedLines = this.graph.append('g')
       .attr('class', 'dotted-lines')
       .style('opacity', 0);
+
     // create x dotted line and append to dotted line group
     this.xLine = this.dottedLines
       .append('line')
@@ -148,9 +178,21 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('stroke-dasharray', '5,5')
       .attr('stroke', '#AAA')
       .attr('stroke-width', 1)
+
+
+    // Show T-Stat status
+    this.tStatStatus = this.graph.append('g')
+      .attr('class', 'tstat-status')
+
+    // this.digitalWave = this.tStatStatus.selectAll('rect')
+    //   .append('rect')
+    //   .attr('transform', `translate(0,${this.graphHeight - 20})`) // origin of axis is on top, translate to bottom
+    //   .attr('height', this.graphHeight)
+    //   .attr('width', 10)
+    //   .attr('rx', 10)
+    //   .attr('fill', 'yellow')
+    //   .attr('class', 'rec-tstat')
   }
-
-
 
   update = (data: any) => {
 
@@ -172,9 +214,23 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('class', 'line-data')
 
 
+    this.digitalWave = this.tStatStatus.selectAll('rect')
+      .data(this.tStatData)
+      .enter()
+      .append('rect')
+      .attr('transform', `translate(0,${this.graphHeight - 20})`) // origin of axis is on top, translate to bottom
+      .attr('height', 6)
+      .attr('width', 6)
+      .attr('rx', 4)
+      .attr('fill', (d: any) => d.systemOn ? 'yellow' : '#00bfa5')
+      .attr('class', 'rec-tstat')
+      .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
+      .append('rect')
+
     // create points for
     const circles = this.graph.selectAll('circle')
       .data(data)
+
 
     // address existing points
     circles
@@ -239,6 +295,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .tickFormat(d => d + ' °F');
 
 
+
     // call the axes
     this.xAxisGroup.call(xAxis);
     this.yAxisGroup.call(yAxis);
@@ -252,7 +309,33 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs$.unsubscribe()
   }
+  async getTstatStatus() {
+    this.tStatData$ = this.firestore.collection('zones').doc('zone1').collection('readings')
+      .stateChanges().pipe(map((res: any) => {
+        res.forEach((change: any) => {
+          const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
 
+          console.log(change.type)
+          switch (change.type) {
+            case 'added':
+              this.tStatData.push(doc)
+              break;
+            case 'modified':
+              const index = this.data.findIndex((item) => item.id == doc.id) // get the item from data []
+              this.tStatData[index] = doc; // overwrite old element with the modified one
+              break;
+            case 'removed':
+              this.tStatData = this.tStatData.filter((item) => item.id !== doc.id) // filter out the removed element as new array
+              break;
+            default: // default case required
+              break;
+          }
+        });
+        this.update(this.data);
+      })
+      ).subscribe()
+
+  }
   // data and firestore
   async getByDate(daysAgo: number) {
     //Get today's date using the JavaScript Date object.
