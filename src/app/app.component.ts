@@ -3,7 +3,7 @@ import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
 import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { HostListener } from "@angular/core";
-import { AnyForUntypedForms } from '@angular/forms';
+import { ThisReceiver } from '@angular/compiler';
 
 
 @Component({
@@ -16,26 +16,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'ai-datapipes';
   public data: any[] = [];
   public currentDate = new Date();
-  // public tStatData = [
-  //   {
-  //     timeStamp: new Date(this.currentDate.getTime() + -10 * 60000),
-  //     systemOn: true
-  //   },
-  //   {
-  //     timeStamp: new Date(this.currentDate.getTime() + -30 * 60000),
-  //     systemOn: false
-  //   },
-  //   {
-  //     timeStamp: new Date(this.currentDate.getTime() + -50 * 60000),
-  //     systemOn: true
-  //   },
-  //   {
-  //     timeStamp: new Date(this.currentDate.getTime() + -70 * 60000),
-  //     systemOn: false
-  //   },
-
-  // ]
   public tStatData: any[] = [];
+  public tStatData$: any;
   public tStatStatus: any;
   public digitalWave: any;
   public activity = 'sensor1';
@@ -48,7 +30,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public yLine: any;
   public dottedLines: any;
   public subs$: any;
-  public tStatData$: any;
   public dateData: any;
   public currentLookBack: any;
   d3zoom = d3.zoom<SVGSVGElement, unknown>();
@@ -81,12 +62,17 @@ export class AppComponent implements OnInit, OnDestroy {
   // }
   ngOnInit() {
     this.buildSVG();
+    let daysAgo = 2;
+    // get all sensor data
     //this.getData();
-    this.getByDate(1); // how many days ago
-    this.getTstatStatus();
-    console.log(this.tStatData)
+
+    // get sensor data by days ago
+    this.getTstatStatus(daysAgo);
+    this.getByDate(daysAgo);
+    // get tstat activitiy
+
   }
-  // Pan + Zoom
+  // Pan + Zoom allows for horizontall scrolling (x-axis)
   zoomed(event: any) {
     let vectorPan = event.transform;
     d3.select('.graph')
@@ -102,7 +88,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(${vectorPan.x})`)
     d3.selectAll('.tstat-status')
       .attr('transform', `translate(${vectorPan.x})`)
-
   }
 
   // Margins + Dimensions
@@ -139,6 +124,10 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('height', this.graphHeight)
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`)
 
+    // create T-Stat status group
+    this.tStatStatus = this.graph.append('g')
+      .attr('class', 'tstat-status')
+    //this.digitalWave = this.tStatStatus.selectAll('rect')
     // Create Axis Group in Update for Z-indexing
     this.xAxisGroup = this.graph.append('g')
       .attr('class', 'x-axis')
@@ -180,30 +169,66 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('stroke-width', 1)
 
 
-    // Show T-Stat status
-    this.tStatStatus = this.graph.append('g')
-      .attr('class', 'tstat-status')
 
-    // this.digitalWave = this.tStatStatus.selectAll('rect')
-    //   .append('rect')
-    //   .attr('transform', `translate(0,${this.graphHeight - 20})`) // origin of axis is on top, translate to bottom
-    //   .attr('height', this.graphHeight)
-    //   .attr('width', 10)
-    //   .attr('rx', 10)
-    //   .attr('fill', 'yellow')
-    //   .attr('class', 'rec-tstat')
+
   }
+  // updateTstatData = (data: any) => {
+  //   // data is sorted for proper painting (z-index)
+  //   data.sort((a: any, b: any) => (a.timeStamp.seconds > b.timeStamp.seconds) ? 1 : -1)
+
+  //   // address existing rects
+  //   this.digitalWave = this.tStatStatus.selectAll('rect')
+  //     .data(data)
+
+  //   this.digitalWave
+  //     .attr('fill', (data: any) => data.systemOn ? '#BB86FC' : '')
+  //     .attr('x', (data: any) => this.xScale(new Date(data.timeStamp.seconds)))
+
+  //   this.digitalWave
+  //     .enter()
+  //     .append('rect')
+  //     //.attr('transform', `translate(0,${this.graphHeight - 20})`) // origin of axis is on top, translate to bottom
+  //     .attr('height', this.graphHeight)
+  //     .attr('width', 4)
+  //     .attr('r', 4)
+  //     .attr('fill', (data: any) => (data.systemOn) ? '#BB86FC' : '')
+  //     .attr('class', 'rec-tstat')
+  //     .attr('x', (data: any) => this.xScale(new Date(data.timeStamp.seconds)))
+  // }
+
 
   update = (data: any) => {
 
-    // filter out irrelevant data
-    //data = data.filter((item: any) => item.activity == this.activity)  // keep true
-
-    // sort by date
-    data.sort((a: any, b: any) => (a.timeStamp.seconds > b.timeStamp.seconds) ? 1 : -1)
     // set scale domains
     this.xScale.domain(d3.extent(data, (d: any) => new Date(d.timeStamp.seconds)) as Iterable<number>); // returns earliest and latest date
     this.yScale.domain(d3.extent(data, (d: any) => d.temperatureF) as Iterable<number>); // returns 0 and longest distance
+
+    // data is sorted for proper painting (z-index)
+    this.tStatData.sort((a: any, b: any) => (a.timeStamp.seconds > b.timeStamp.seconds) ? 1 : -1)
+    data.sort((a: any, b: any) => (a.timeStamp.seconds > b.timeStamp.seconds) ? 1 : -1)
+    // add tStat info first
+    // address existing rects
+    this.digitalWave = this.tStatStatus.selectAll('rect')
+      .data(this.tStatData)
+
+    this.digitalWave
+      .attr('fill', (d: any) => d.systemOn ? '#BB86FC' : '')
+      .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
+
+    this.digitalWave
+      .enter()
+      .append('rect')
+      .attr('transform', `translate(0,${this.graphHeight - 20} )`) // origin of axis is on top, translate to bottom
+      .attr('height', 20)
+      .attr('width', 2)
+      .attr('rx', 2)
+      // .attr('fill', (d: any) => (d.systemOn) ? '#BB86FC' : '') // Darktheme Purple
+      .attr('fill', (d: any) => (d.systemOn) ? '#BB55DD' : '')
+      .attr('class', 'rec-tstat')
+      .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
+
+
+
 
     // update path data
     this.path.data([data]) // pass in array into path generator
@@ -212,20 +237,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('stroke-width', 2)
       .attr('d', this.line)
       .attr('class', 'line-data')
-
-
-    this.digitalWave = this.tStatStatus.selectAll('rect')
-      .data(this.tStatData)
-      .enter()
-      .append('rect')
-      .attr('transform', `translate(0,${this.graphHeight - 20})`) // origin of axis is on top, translate to bottom
-      .attr('height', 6)
-      .attr('width', 6)
-      .attr('rx', 4)
-      .attr('fill', (d: any) => d.systemOn ? 'yellow' : '#00bfa5')
-      .attr('class', 'rec-tstat')
-      .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
-      .append('rect')
 
     // create points for
     const circles = this.graph.selectAll('circle')
@@ -308,9 +319,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.subs$.unsubscribe()
+    this.tStatData$.unsubscribe()
   }
-  async getTstatStatus() {
-    this.tStatData$ = this.firestore.collection('zones').doc('zone1').collection('readings')
+  async getTstatStatus(daysAgo: number) {
+    const numberOfDays = this.getDaysAgo(new Date(), daysAgo);
+    this.tStatData$ = this.firestore.collection('zones').doc('zone1').collection('readings', (ref: any | undefined) => ref.where('timeStamp', '>', numberOfDays))
       .stateChanges().pipe(map((res: any) => {
         res.forEach((change: any) => {
           const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
@@ -318,10 +331,11 @@ export class AppComponent implements OnInit, OnDestroy {
           console.log(change.type)
           switch (change.type) {
             case 'added':
-              this.tStatData.push(doc)
+              if (doc.systemOn)
+                this.tStatData.push(doc)
               break;
             case 'modified':
-              const index = this.data.findIndex((item) => item.id == doc.id) // get the item from data []
+              const index = this.tStatData.findIndex((item) => item.id == doc.id) // get the item from data []
               this.tStatData[index] = doc; // overwrite old element with the modified one
               break;
             case 'removed':
@@ -331,7 +345,8 @@ export class AppComponent implements OnInit, OnDestroy {
               break;
           }
         });
-        this.update(this.data);
+        //this.updateTstatData(this.tStatData);
+        //this.update(this.data)
       })
       ).subscribe()
 
@@ -412,6 +427,4 @@ export class AppComponent implements OnInit, OnDestroy {
     var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
     return pastDate;
   }
-
-
 }
