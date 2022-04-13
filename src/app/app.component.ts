@@ -168,9 +168,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('stroke', '#AAA')
       .attr('stroke-width', 1)
 
-
-
-
   }
   // updateTstatData = (data: any) => {
   //   // data is sorted for proper painting (z-index)
@@ -211,9 +208,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.digitalWave = this.tStatStatus.selectAll('rect')
       .data(this.tStatData)
 
+
     this.digitalWave
       .attr('fill', (d: any) => d.systemOn ? '#BB86FC' : '')
       .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
+
+
+
 
     this.digitalWave
       .enter()
@@ -226,6 +227,29 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('fill', (d: any) => (d.systemOn) ? '#BB55DD' : '')
       .attr('class', 'rec-tstat')
       .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
+      .each((d: any, i: any, n: any) => {
+        const node = d3.select(n[i])
+          .on('mouseover', () => {
+            d3.select('.line-data')
+              .attr('opacity', .5)
+            node
+              .attr('cursor', 'pointer')
+              .attr('transform', `translate(0,0 )`) // origin of axis is on top, translate to bottom
+              .attr('height', this.graphHeight)
+          })
+          .on('click', () => {
+            console.log(new Date(d.timeStamp.seconds * 1000))
+
+          })
+          .on('mouseout', () => {
+            d3.select('.line-data')
+              .attr('opacity', 1)
+            node.attr('width', 2)
+              .attr('transform', `translate(0,${this.graphHeight - 20} )`) // origin of axis is on top, translate to bottom
+              .attr('height', 20)
+          });
+      })
+
 
 
 
