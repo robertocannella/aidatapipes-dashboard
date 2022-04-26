@@ -3,7 +3,7 @@ import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
 import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { HostListener } from "@angular/core";
-import { ThisReceiver } from '@angular/compiler';
+import { ConstantPool, ThisReceiver } from '@angular/compiler';
 
 
 @Component({
@@ -74,7 +74,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   // Pan + Zoom allows for horizontall scrolling (x-axis)
   zoomed(event: any) {
+
+
     let vectorPan = event.transform;
+    // disable scrolling along the x-axis if graph reaches edge
+    if (vectorPan.x < 1 - this.graphWidth || vectorPan.x > this.graphWidth) {
+      return;
+    }
+
+    // select all items to scroll
     d3.select('.graph')
       .selectAll('.x-axis,.line-data,.y-axis')
       .attr('transform', `translate(${vectorPan.x})`)

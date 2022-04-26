@@ -8,10 +8,12 @@ import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    OutdoorTempComponent
   ],
   imports: [
     BrowserModule,
