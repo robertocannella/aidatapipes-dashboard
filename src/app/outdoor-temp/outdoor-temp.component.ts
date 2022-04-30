@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OutdoorTempService } from '../services/outdoor-temp.service';
 import * as d3 from 'd3';
 
 @Component({
@@ -7,15 +8,24 @@ import * as d3 from 'd3';
   styleUrls: ['./outdoor-temp.component.scss']
 })
 export class OutdoorTempComponent implements OnInit {
-
+  public currentTemperature = 0;
   public margin = { top: 40, right: 10, bottom: 50, left: 75 };
 
   // graph attributes (not svg)
   public graphWidth = 400 - this.margin.left - this.margin.right; // svg container width
   public graphHeight = 100;
 
+
+  constructor(public outdoor: OutdoorTempService) {
+
+  }
+
   ngOnInit(): void {
-    this.buildSVG();
+    this.outdoor.getCurrentOutdoorTemperature().subscribe((data: any) => {
+      //  Store all JSON Data for local filtering.
+      this.currentTemperature = data.degreesFahrenheit
+    });
+    //this.buildSVG();
   }
 
   buildSVG() {

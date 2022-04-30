@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { HostListener } from "@angular/core";
 import { ConstantPool, ThisReceiver } from '@angular/compiler';
-
+import { OutdoorTempService } from './services/outdoor-temp.service';
 
 
 @Component({
@@ -36,8 +36,9 @@ export class AppComponent implements OnInit, OnDestroy {
   d3zoom = d3.zoom<SVGSVGElement, unknown>();
 
   //items: Observable<any[]>;
-  constructor(public firestore: AngularFirestore) {
+  constructor(public firestore: AngularFirestore, public outdoor: OutdoorTempService) {
     //this.items = firestore.collection('datapipes').valueChanges();
+
   }
   // @HostListener('window:scroll', ['$event'])
   // onWindowScroll(event?: any) {
@@ -61,7 +62,9 @@ export class AppComponent implements OnInit, OnDestroy {
   //     this.path.attr(`transform, translate(${window.scrollX},0)`)
   //   }
   // }
-  ngOnInit() {
+  async ngOnInit() {
+
+
 
     this.buildSVG();
     let daysAgo = 2;

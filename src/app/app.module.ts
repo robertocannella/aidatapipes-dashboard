@@ -9,7 +9,8 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientJsonpModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +22,8 @@ import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
+    HttpClientModule,
+    HttpClientJsonpModule
 
   ],
   providers: [],
