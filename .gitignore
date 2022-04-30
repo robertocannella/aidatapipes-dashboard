@@ -55,3 +55,8 @@ src/environments/environment.prod.ts
 src/environments/environment.ts
 package.json
 package-lock.json
+src/environments/environments.dev.ts
+src/environments/environment.ts
+src/environments/environment.prod.ts
+src/environments/environment.ts
+src/environments/environment.prod.ts

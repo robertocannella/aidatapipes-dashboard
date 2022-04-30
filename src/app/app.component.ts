@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import { map, Subscription } from 'rxjs';
 import { HostListener } from "@angular/core";
 import { ConstantPool, ThisReceiver } from '@angular/compiler';
+import { environment } from './../environments/environment';
 
 
 @Component({
@@ -12,8 +13,8 @@ import { ConstantPool, ThisReceiver } from '@angular/compiler';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-
-  title = 'ai-datapipes';
+  title = environment!.firebase.title;
+  apiURL = environment!.firebase.apiKey;
   public data: any[] = [];
   public currentDate = new Date();
   public tStatData: any[] = [];
@@ -61,8 +62,11 @@ export class AppComponent implements OnInit, OnDestroy {
   //   }
   // }
   ngOnInit() {
+
     this.buildSVG();
     let daysAgo = 2;
+
+
     // get all sensor data
     //this.getData();
 

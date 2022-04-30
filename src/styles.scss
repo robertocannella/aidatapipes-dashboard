@@ -32,11 +32,26 @@ form span {
   overflow-x: scroll;
 }
 
+#app-outdoor-temp-x-axis path {
+  stroke: #CCC;
+}
+
+#app-outdoor-temp-x-axis text {
+  fill: #CCC;
+  font-size: 14px;
+}
+
+.tick line {
+  stroke: white;
+
+}
+
 .x-axis path,
 .y-axis path,
 .x-axis line,
 .y-axis line {
   stroke: #CCC;
+  stroke-width: 2;
 }
 
 .x-axis text,
