@@ -8,6 +8,8 @@ export const environment = {
     authDomain: 'aidatapipes.firebaseapp.com',
     messagingSenderId: '652694324617',
     measurementId: 'G-DYBLNL77QE',
+    title: 'Dev Environment Heading',
+    apiURL: 'http://dev.example.com'
   },
   production: true
 };

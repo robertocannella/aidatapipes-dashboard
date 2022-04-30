@@ -9,6 +9,8 @@ export const environment = {
     storageBucket: 'aidatapipes.appspot.com',
     locationId: 'us-central',
     apiKey: 'AIzaSyAnNoD1_dRa-_xMq_0AJjVim8um4tpF1xk',
+    title: 'Dev Environment Heading',
+    apiURL: 'http://dev.example.com',
     authDomain: 'aidatapipes.firebaseapp.com',
     messagingSenderId: '652694324617',
     measurementId: 'G-DYBLNL77QE',
