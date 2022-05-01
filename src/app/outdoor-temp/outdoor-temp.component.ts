@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OutdoorTempService } from '../services/outdoor-temp.service';
 import * as d3 from 'd3';
+import { Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-outdoor-temp',
@@ -8,7 +9,7 @@ import * as d3 from 'd3';
   styleUrls: ['./outdoor-temp.component.scss']
 })
 export class OutdoorTempComponent implements OnInit {
-  public currentTemperature = 0;
+  public currentTemperature$: any;
   public margin = { top: 40, right: 10, bottom: 50, left: 75 };
 
   // graph attributes (not svg)
@@ -20,11 +21,15 @@ export class OutdoorTempComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-    this.outdoor.getCurrentOutdoorTemperature().subscribe((data: any) => {
-      //  Store all JSON Data for local filtering.
-      this.currentTemperature = data.degreesFahrenheit
-    });
+  async ngOnInit() {
+    this.currentTemperature$ = (await this.outdoor.getCurrentOutdoorTemperatureFB()).pipe(map((res: any) => {
+      return res.degreesFahrenheit
+    }))
+
+    // this.outdoor.getCurrentOutdoorTemperature().subscribe((data: any) => {
+    //   //  Store all JSON Data for local filtering.
+    //   this.currentTemperature = data.degreesFahrenheit
+    // });
     //this.buildSVG();
   }
 
