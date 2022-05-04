@@ -74,7 +74,7 @@ export class OutdoorTempComponent implements OnInit {
 
     // configure x-axis line
     this.axisX = d3.axisBottom(this.xScale)
-      .ticks(5)
+      .ticks(3)
       .tickSizeOuter(5)
       .tickSizeInner(5)
       .tickPadding(5)
@@ -140,13 +140,16 @@ export class OutdoorTempComponent implements OnInit {
       .attr('class', `x-axis-${this.selector}`)
       .attr('id', 'app-outdoor-temp-x-axis')
       .attr("transform", `translate(${this.margin.left},${this.graphHeight})`) // move to bottom * default is top
-      .call(this.axisX);
+      .call(this.axisX)
+
 
     this.yG = chart.append('g')
       .attr('class', `y-axis-${this.selector}`)
       .attr('id', 'app-outdoor-temp-x-axis')
       .attr('transform', `translate(${this.graphWidth - this.margin.right}, 0)`)
       .call(this.axisY);
+
+
   }
 
   zoomed(event: any, data: any) {
