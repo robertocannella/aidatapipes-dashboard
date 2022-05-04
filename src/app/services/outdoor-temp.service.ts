@@ -9,7 +9,7 @@ import { catchError, map, retry } from 'rxjs/operators';
 })
 export class OutdoorTempService {
 
-  private BASE_URL = 'http://dbs.aidatapipes.com:3200/api/tempreadings/';
+  private BASE_URL = 'https://dbs.aidatapipes.com/api/tempreadings/';
   public lastOutdoorTempSubs$: any
 
 
@@ -18,10 +18,12 @@ export class OutdoorTempService {
   }
 
   async getCurrentOutdoorTemperatureFB() {
-    return this.firestore.collection('outdoortemps').doc('Stienhart_OUTDOOR').valueChanges()
-
+    return this.firestore.collection('outdoortemps').doc('Stienhart_OUTDOOR').valueChanges();
   }
   getCurrentOutdoorTemperature() {
-    return this.http.get<any[]>(this.BASE_URL + '/getCurrentOutdoorTemp/')
+    return this.http.get<any[]>(this.BASE_URL + 'getCurrentOutdoorTemp/');
+  }
+  getLastXOutdoorTemps(value: number) {
+    return this.http.get<any[]>(this.BASE_URL + 'getLastXOutdoorTemps/' + value);
   }
 }

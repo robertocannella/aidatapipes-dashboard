@@ -1,24 +1,18 @@
 <div class="container section">
     <div class="row">
-        <div class="col s12 l5">
-            <button class="disabled" disabled data-activity="sensor1">Outdoor Temp {{ currentTemperature$ | async |
-                number
-                :'1.2-2'}} F</button>
-            <!-- <button data-activity="running">Running</button>
-        <button data-activity="swimming">Swimming</button>
-        <button data-activity="walking">Walking</button> -->
+        <div class="col hide-on-small-only m3 l4 teal"></div>
+        <div class="col s12 m6 l4 ">
+            <button data-activity="sensor1" (click)="toggleChart()">
+                Outdoor Temp
+                {{ (firebaseError) ? (currentTemperature$ | async | number :"1.2-2") : currentTemperature | number
+                :"1.2-2" }} F</button>
         </div>
-        <div class="col s12 l6 push-l1">
+        <div class="col hide-on-small-only m3 l4 teal"></div>
+    </div>
+    <div class="row">
+        <div class="col s12 m12 l12">
             <div class="app-outdoor-temp-canvas">
             </div>
         </div>
-    </div>
-    <div class="row">
-        <form class="col m6 push-m3">
-
-            <!-- <p class="flow-text grey-text center">How much <span>cycling</span> have you done today?</p> -->
-            <!-- <input class="grey-text" type="text" id="cycling" placeholder="Distance in km" /> -->
-            <p class="center pink-text error text-lighten-1"></p>
-        </form>
     </div>
 </div>

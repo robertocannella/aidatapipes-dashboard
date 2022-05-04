@@ -25,18 +25,30 @@ form span {
   color: #00bfa5 !important;
 }
 
-.canvas {
+.canvas,
+.app-outdoor-temp-canvas {
   text-align: center;
   // max-width: 100vw;
   // overflow-x: hidden;
   overflow-x: scroll;
 }
 
-#app-outdoor-temp-x-axis path {
+.x-axis-app-outdoor-temp path {
   stroke: #CCC;
 }
 
-#app-outdoor-temp-x-axis text {
+
+.x-axis-app-outdoor-temp text {
+  fill: #CCC;
+  font-size: 14px;
+}
+
+.y-axis-app-outdoor-temp path {
+  stroke: #CCC;
+}
+
+
+.y-axis-app-outdoor-temp text {
   fill: #CCC;
   font-size: 14px;
 }

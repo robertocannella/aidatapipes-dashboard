@@ -14,7 +14,7 @@ import { HttpClientJsonpModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    OutdoorTempComponent
+    OutdoorTempComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,9 +12,14 @@ import { OutdoorTempService } from './services/outdoor-temp.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
+
 export class AppComponent implements OnInit, OnDestroy {
+
+
   // title = environment!.firebase.title;
   // apiURL = environment!.firebase.apiKey;
+
   public data: any[] = [];
   public currentDate = new Date();
   public tStatData: any[] = [];
@@ -64,18 +69,20 @@ export class AppComponent implements OnInit, OnDestroy {
   // }
   async ngOnInit() {
 
-
-
+    // ************ DISABLE FIRESTORRE READS ON DEVELOPMENT
+    //
     this.buildSVG();
-    let daysAgo = 2;
-
-
-    // get all sensor data
-    //this.getData();
-
-    // get sensor data by days ago
+    let daysAgo = 1;
     this.getTstatStatus(daysAgo);
     this.getByDate(daysAgo);
+    //
+    //
+    // *****************************************************
+
+    // COMMENTED OUT BY DEFUALT
+    // get all sensor data
+    //this.getData();
+    // get sensor data by days ago
     // get tstat activitiy
 
   }
@@ -254,7 +261,6 @@ export class AppComponent implements OnInit, OnDestroy {
           })
           .on('click', () => {
             console.log(new Date(d.timeStamp.seconds * 1000))
-
           })
           .on('mouseout', () => {
             d3.select('.line-data')
