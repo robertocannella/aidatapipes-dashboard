@@ -17,8 +17,12 @@ export class OutdoorTempService {
 
   }
 
-  async getCurrentOutdoorTemperatureFB() {
-    return this.firestore.collection('outdoortemps').doc('Stienhart_OUTDOOR').valueChanges();
+  // async getCurrentOutdoorTemperatureFB() {
+  //   return this.firestore.collection('outdoortemps').doc('Stienhart_OUTDOOR').snapshotChanges();
+  // }
+
+  getCurrentOutdoorTemperatureFB() {
+    return this.firestore.collection('outdoortemps').snapshotChanges()
   }
   getCurrentOutdoorTemperature() {
     return this.http.get<any[]>(this.BASE_URL + 'getCurrentOutdoorTemp/');

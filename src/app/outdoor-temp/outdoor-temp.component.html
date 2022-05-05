@@ -4,8 +4,9 @@
         <div class="col s12 m6 l4 ">
             <button data-activity="sensor1" (click)="toggleChart()">
                 Outdoor Temp
-                {{ (firebaseError) ? (currentTemperature$ | async | number :"1.2-2") : currentTemperature | number
-                :"1.2-2" }} F</button>
+                <!-- {{ (firebaseError) ? (currentTemperature$ | async | number :"1.2-2") : currentTemperature | number -->
+                {{ currentTemperature | number :"1.2-2"}} F
+            </button>
         </div>
         <div class="col hide-on-small-only m3 l4 teal"></div>
     </div>

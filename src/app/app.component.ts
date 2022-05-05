@@ -370,7 +370,7 @@ export class AppComponent implements OnInit, OnDestroy {
         res.forEach((change: any) => {
           const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
 
-          console.log(change.type)
+          //console.log(change.type)
           switch (change.type) {
             case 'added':
               if (doc.systemOn)
@@ -444,7 +444,7 @@ export class AppComponent implements OnInit, OnDestroy {
         res.forEach((change: any) => {
           const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
 
-          console.log(change.type)
+          //console.log(change.type)
           switch (change.type) {
             case 'added':
               this.data.push(doc)

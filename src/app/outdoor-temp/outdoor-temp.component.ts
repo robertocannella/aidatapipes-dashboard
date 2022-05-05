@@ -3,6 +3,7 @@ import { OutdoorTempService } from '../services/outdoor-temp.service';
 import * as d3 from 'd3';
 import { map } from 'rxjs';
 import { HostListener } from "@angular/core";
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-outdoor-temp',
@@ -43,14 +44,15 @@ export class OutdoorTempComponent implements OnInit {
 
 
   constructor(public outdoor: OutdoorTempService) {
-
+    // set backup tempreading
   }
+
   calcWidthMultiplier(innerWidth: number) {
     // minimize margin for small screens
     return (innerWidth < 450) ? .25 : .35;  // [small screens] : [large screens]
   }
   buildSVG(data: any) {
-    console.log(this.innerWidth)
+    //console.log(this.innerWidth)
     const WIDTH_MULTIPLIER = this.calcWidthMultiplier(this.innerWidth)
     // set graph width based on current width of device
     const svgArea = (this.innerWidth - this.margin.right - this.margin.left) - (this.innerWidth * WIDTH_MULTIPLIER);
@@ -154,7 +156,6 @@ export class OutdoorTempComponent implements OnInit {
       .attr('transform', `translate(${this.graphWidth - this.margin.right}, 0)`)
       .call(this.axisY);
 
-
   }
 
   zoomed(event: any, data: any) {
@@ -185,15 +186,8 @@ export class OutdoorTempComponent implements OnInit {
     // set innerWidth poperty upon initialization
     this.innerWidth = window.innerWidth;
 
-    this.currentTemperature$ = (await this.outdoor.getCurrentOutdoorTemperatureFB()).pipe(map((res: any) => {
-      if (res)
-        return res.degreesFahrenheit
-      else
-        return null;
-    }));
-    // set backup tempreading
     this.outdoor.getCurrentOutdoorTemperature().subscribe((data: any) => {
-      this.currentTemperature = data.degreesFahrenheit;
+      // this.currentTemperature = data.degreesFahrenheit;
     });
     this.outdoor.getLastXOutdoorTemps(4).subscribe((data: any) => {
       //  Store all JSON Data for local filtering.
@@ -201,7 +195,18 @@ export class OutdoorTempComponent implements OnInit {
 
     });
 
+    this.currentTemperature$ = this.outdoor.getCurrentOutdoorTemperatureFB()
+      .pipe(map((res: any) => {
+        res.forEach((change: any) => {
+          console.log(change.type)
+          const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
+          this.currentTemperature = doc.degreesFahrenheit;
+        });
+      })
+      ).subscribe();;
   }
+
+
   toggleChart() {
     this.showChart = !this.showChart;
     this.buildSVG(this.data);
