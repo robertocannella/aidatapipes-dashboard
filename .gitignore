@@ -63,4 +63,4 @@ src/environments/environment.prod.ts
 src/assets/environment.ts
 .gitignore
 src/assets/environment.prod.ts
-src/app/zone-temps/zone-temps.component.ts
+
