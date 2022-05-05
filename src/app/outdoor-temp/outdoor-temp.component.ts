@@ -49,7 +49,7 @@ export class OutdoorTempComponent implements OnInit {
   buildSVG(data: any) {
 
     // set graph width based on current width of device
-    const svgArea = (this.innerWidth - this.margin.right - this.margin.left) - (this.innerWidth * .25);
+    const svgArea = (this.innerWidth - this.margin.right - this.margin.left) - (this.innerWidth * .35);
     this.graphWidth = svgArea + this.margin.left + this.margin.right;
     this.extent = [[0, 0], [this.graphWidth - (this.margin.right + this.margin.left), this.graphHeight]]; // [[topLeftCorner],[bottomRightCorner]]
 
