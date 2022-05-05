@@ -38,7 +38,8 @@ export class OutdoorTempComponent implements OnInit {
   extent: any;
   public showChart: boolean = true;
   show = true;
-
+  INNER_WIDTH = this.graphWidth - this.margin.left - this.margin.right;
+  INNER_HEIGHT = this.graphHeight - this.margin.top - this.margin.bottom;
 
 
   constructor(public outdoor: OutdoorTempService) {
@@ -200,7 +201,6 @@ export class OutdoorTempComponent implements OnInit {
   toggleChart() {
     this.showChart = !this.showChart;
     this.buildSVG(this.data);
-    console.log(this.showChart)
   }
 }
 

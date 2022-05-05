@@ -11,10 +11,12 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientJsonpModule } from '@angular/common/http';
+import { ZoneTempsComponent } from './zone-temps/zone-temps.component';
 @NgModule({
   declarations: [
     AppComponent,
     OutdoorTempComponent,
+    ZoneTempsComponent,
   ],
   imports: [
     BrowserModule,

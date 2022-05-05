@@ -235,9 +235,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .attr('fill', (d: any) => d.systemOn ? '#BB86FC' : '')
       .attr('x', (d: any) => this.xScale(new Date(d.timeStamp.seconds)))
 
-
-
-
     this.digitalWave
       .enter()
       .append('rect')
