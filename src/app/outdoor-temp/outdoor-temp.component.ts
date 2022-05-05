@@ -45,11 +45,15 @@ export class OutdoorTempComponent implements OnInit {
   constructor(public outdoor: OutdoorTempService) {
 
   }
-
+  calcWidthMultiplier(innerWidth: number) {
+    // minimize margin for small screens
+    return (innerWidth < 450) ? .25 : .35;  // [small screens] : [large screens]
+  }
   buildSVG(data: any) {
-
+    console.log(this.innerWidth)
+    const WIDTH_MULTIPLIER = this.calcWidthMultiplier(this.innerWidth)
     // set graph width based on current width of device
-    const svgArea = (this.innerWidth - this.margin.right - this.margin.left) - (this.innerWidth * .35);
+    const svgArea = (this.innerWidth - this.margin.right - this.margin.left) - (this.innerWidth * WIDTH_MULTIPLIER);
     this.graphWidth = svgArea + this.margin.left + this.margin.right;
     this.extent = [[0, 0], [this.graphWidth - (this.margin.right + this.margin.left), this.graphHeight]]; // [[topLeftCorner],[bottomRightCorner]]
 
