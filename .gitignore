@@ -65,3 +65,8 @@ src/assets/environment.ts
 src/assets/environment.prod.ts
 
 temp.js
+temp.html
+src/app/svg-rescale/svg-rescale.component.spec.ts
+src/app/svg-rescale/svg-rescale.component.scss
+.gitignore
+src/app/zone-temps/zone-temps.component.scss
