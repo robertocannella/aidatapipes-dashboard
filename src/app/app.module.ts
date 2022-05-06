@@ -12,11 +12,13 @@ import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { ZoneTempsComponent } from './zone-temps/zone-temps.component';
+import { SvgRescaleComponent } from './svg-rescale/svg-rescale.component';
 @NgModule({
   declarations: [
     AppComponent,
     OutdoorTempComponent,
     ZoneTempsComponent,
+    SvgRescaleComponent,
   ],
   imports: [
     BrowserModule,

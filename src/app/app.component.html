@@ -10,14 +10,16 @@
 
 <app-outdoor-temp></app-outdoor-temp>
 <div class="divider"></div>
-<!-- <app-zone-temps></app-zone-temps> -->
-<!-- <div class="divider"></div> -->
+<app-svg-rescale></app-svg-rescale>
+<div class="divider"></div>
+<app-zone-temps></app-zone-temps>
+<div class="divider"></div>
 
 <div class="container section">
   <div class="row">
     <div class="col s12 l5">
       <p class="grey-text">
-        {{data.length}} samples since {{ currentLookBack.getMonth() + 1}}\{{currentLookBack.getDate() }}
+        <!-- {{data.length}} samples since {{ currentLookBack.getMonth() + 1}}\{{currentLookBack.getDate() }} -->
       </p>
       <button class="active" disabled data-activity="sensor1">Zone 1 </button>
       <!-- <button data-activity="running">Running</button>

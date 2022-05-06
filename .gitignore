@@ -64,3 +64,4 @@ src/assets/environment.ts
 .gitignore
 src/assets/environment.prod.ts
 
+temp.js

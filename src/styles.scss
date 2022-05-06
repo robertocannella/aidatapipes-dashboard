@@ -1,6 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
-
 .nav {
   background: #333
 }
@@ -26,6 +24,7 @@ form span {
 }
 
 .canvas,
+.app-zone-temps-canvas,
 .app-outdoor-temp-canvas {
   text-align: center;
   // max-width: 100vw;
@@ -33,11 +32,22 @@ form span {
   overflow-x: scroll;
 }
 
+.app-svg-rescale-y-axis path,
+.app-svg-rescale-x-axis path,
+.app-zone-temps-x-axis path,
+.app-zone-temps-y-axis path,
 .x-axis-app-outdoor-temp path {
   stroke: #CCC;
 }
 
 
+.app-svg-rescale-y-axis text,
+.app-svg-rescale-x-axis text {
+  fill: #ccc;
+}
+
+.app-zone-temps-x-axis text,
+.app-zone-temps-y-axis text,
 .x-axis-app-outdoor-temp text {
   fill: #CCC;
   font-size: 14px;
@@ -46,7 +56,6 @@ form span {
 .y-axis-app-outdoor-temp path {
   stroke: #CCC;
 }
-
 
 .y-axis-app-outdoor-temp text {
   fill: #CCC;
@@ -70,4 +79,35 @@ form span {
 .y-axis text {
   fill: #CCC;
   font-size: 14px;
+}
+
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 55%;
+  padding-top: 20px;
+  /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  left: 0;
+
+}
+
+.rect {
+  stroke: steelblue;
+  stroke-width: 5px;
+}
+
+.label {
+  fill: teal;
+  font-size: 12pt;
+  text-anchor: middle;
+  font-size: 8pt;
 }
