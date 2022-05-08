@@ -70,3 +70,7 @@ src/app/svg-rescale/svg-rescale.component.spec.ts
 src/app/svg-rescale/svg-rescale.component.scss
 .gitignore
 src/app/zone-temps/zone-temps.component.scss
+src/app/hydronic-zone.service.spec.ts
+src/app/services/hydronic-zone.service.spec.ts
+src/app/serivces/system.service.spec.ts
+src/app/services/system.service.spec.ts
