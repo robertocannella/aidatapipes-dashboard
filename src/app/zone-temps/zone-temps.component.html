@@ -13,9 +13,12 @@
     <div class="row">
         <div class="col s12 m12 l12" teal>
             <!-- NEED INPUT OF ZONE HERE -->
-            <div class="app-zone-temps-canvas">
+
+            <div *ngFor="let zone of zones ; let i = index">
+                <app-svg-rescale [index]="i" [hydronicZone]="zone.lineRT"></app-svg-rescale>
             </div>
-            <div id="chartId"></div>
+            <div> </div>
         </div>
+
     </div>
 </div>

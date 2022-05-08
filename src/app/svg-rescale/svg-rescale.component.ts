@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { ElementRef, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
+import { SimpleChange } from '@angular/core';
+import { AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as d3 from 'd3';
-import { map } from 'rxjs';
+import { select, stratify } from 'd3';
+import { BehaviorSubject, map } from 'rxjs';
 import { OutdoorTempService } from '../services/outdoor-temp.service';
+import { HydronicZone, RMTMPState } from '../zone-temps/HydronicZone';
 
 
 @Component({
@@ -9,15 +15,23 @@ import { OutdoorTempService } from '../services/outdoor-temp.service';
   templateUrl: './svg-rescale.component.html',
   styleUrls: ['./svg-rescale.component.scss']
 })
-export class SvgRescaleComponent implements OnInit {
+export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
+
+  @Input() hydronicZone?: any;
+  @Input() index?: any;
+  @ViewChild('chartEl') svgElement: any;
+
 
   MARGIN = { top: 30, right: 90, bottom: 50, left: 90 }
   Y_AXIS_OBJ = {
-    label: 'Temperature  °F',
-    orientationLeft: false
+    label: 'Return Temperature  °F',
+    orientationLeft: false,
+    ticks: 5
   }
-  SELECTOR = 'app-svg-rescale';
+  SELECTOR = `app-svg-rescale`;
   X_AXIS_LABEL = 'Time'
+
+
 
   w = 600
   h = 300
@@ -39,10 +53,18 @@ export class SvgRescaleComponent implements OnInit {
   extent: any;
   d3Zoom: any;
   data: any;
-  constructor(public outdoorService: OutdoorTempService) { }
+
+
+  constructor(public outdoorService: OutdoorTempService) {
+
+  }
+  ngAfterViewInit(): void {
+
+  }
 
   buildSVG() {
-    this.svg = d3.select(`div.${this.SELECTOR}-canvas`)
+
+    this.svg = d3.select(`.app-svg-rescale-${this.index}`)
       .append('div')
       .attr('class', 'svg-container')
       .append('svg')
@@ -78,6 +100,7 @@ export class SvgRescaleComponent implements OnInit {
     // Axis configuration
     this.axisX = d3.axisBottom(this.scaleX) // this scale doesn't implement ticks!
       .tickPadding(5)
+      .ticks(5)
     //.tickFormat(d3.timeFormat("%b %Y"))
 
 
@@ -89,7 +112,8 @@ export class SvgRescaleComponent implements OnInit {
     if (!this.Y_AXIS_OBJ.orientationLeft) {
       this.axisY = d3.axisRight(this.scaleY)
         .tickPadding(this.tickBleed)
-        .tickSizeOuter(0);
+        .tickSizeOuter(0)
+        .ticks(this.Y_AXIS_OBJ.ticks)
 
       this.yG = this.chart.append("g")
         .attr("class", `${this.SELECTOR}-y-axis`)
@@ -134,9 +158,37 @@ export class SvgRescaleComponent implements OnInit {
 
   update(data: any) {
 
+    // ******************** AXES DOMAIN CONFIGURATIONS ***********//
     // Scales domain configuratoon
-    this.scaleY.domain([-20, 120])
-    this.scaleX.domain(d3.extent(data, (d: any) => d3.isoParse(d.timeStamp)))
+    // this.scaleY.domain([-20, 120])
+    // this.scaleX.domain(d3.extent(data, (d: any) => d3.isoParse(d.timeStamp)))
+
+    // set scale domains
+    //this.scaleX.domain(d3.extent(data, (d: any) => new Date(d.timeStamp.seconds * 1000)) as Iterable<number>); // returns earliest and latest date
+    //this.scaleY.domain(d3.extent(data, (d: any) => d.temperatureF) as Iterable<number>); // returns 0 and longest distance
+
+    // get extents and range (no timestamp)
+    //const xExtent: any = d3.extent(data, (d: any) => d.timeStamp.seconds * 1000) as Iterable<number>;
+    // const yExtent: any = d3.extent(data, (d: any) => d.temperatureF) as Iterable<number>;
+
+
+
+    const xExtent: any = d3.extent(data, (d: any) => d.timeStamp) as Iterable<number>;
+    const yExtent: any = d3.extent(data, (d: any) => d.degF) as Iterable<number>;
+
+    const xRange = xExtent[1] - xExtent[0]
+    const yRange = yExtent[1] - yExtent[0];
+
+    // set domain to be extent +- 5%
+    this.scaleX.domain([xExtent[0], xExtent[1]]);
+    this.scaleY.domain([yExtent[0] - (yRange * .05), yExtent[1] + (yRange * .05)]); // Add padding for line
+
+    // Line chart domains
+    this.line
+      .x((d: any) => this.scaleX(d.timeStamp) as Iterable<number>)
+      .y((d: any) => this.scaleY(d.degF));
+
+    // ************************ 
 
     this.axisX
     //.tickFormat((d: any) => d3.timeFormat(d.getMonth() == 0 ? "%Y" : "%b")(d));
@@ -145,13 +197,12 @@ export class SvgRescaleComponent implements OnInit {
     this.xG.call(this.axisX);
     this.yG.call(this.axisY);
 
-    // Line chart
-    this.line
-      .x((d: any) => this.scaleX(d3.isoParse(d.timeStamp)))
-      .y((d: any) => this.scaleY(d.degreesFahrenheit));
+
+    console.log(`${this.SELECTOR}-line${this.index}`)
 
     this.view.append("path")
-      .attr("class", `${this.SELECTOR}-line`)
+      .attr("class", `${this.SELECTOR}-line${this.index}`)
+      .join()
       .datum(data)
       .attr("d", this.line)
       .style("stroke", "cornflowerblue")
@@ -170,26 +221,33 @@ export class SvgRescaleComponent implements OnInit {
     this.xG.call(this.axisX);
 
     // rescale horizontal scale for line chart
-    this.line.x((d: any) => newScaleX(d3.isoParse(d.timeStamp)))
-    d3.select(`.${this.SELECTOR}-line`)
+    this.line.x((d: any) => newScaleX(d.timeStamp) as Iterable<number>)
+
+    d3.select(`.${this.SELECTOR}-line${this.index}`)
       .datum(this.data)
       .attr("d", this.line)
+  }
 
+  // EXECTUTE UPDATE HERE
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['hydronicZone']) {
+
+      d3.select('div.app-rescale-svg-canvas')
+        .attr('class', `app-svg-rescale-${this.index}`)
+      d3.select(`.${this.SELECTOR}-line`)
+        .attr('class', `${this.SELECTOR}-line${this.index}`)
+      this.buildSVG();
+
+      setTimeout(() => {
+        this.update(this.hydronicZone)
+        this.data = this.hydronicZone;
+      }, 500)
+    }
 
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
 
-    this.buildSVG();
-    this.outdoorService.getLastXOutdoorTemps(4).pipe(map((data: any) => {
-      this.data = data;
-      this.update(data);
-
-    })).subscribe();
   }
-  switchYAxisOrientation() {
-    this.Y_AXIS_OBJ.orientationLeft = !this.Y_AXIS_OBJ.orientationLeft;
-  }
-
 
 }
