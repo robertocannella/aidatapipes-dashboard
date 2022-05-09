@@ -36,7 +36,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
 
 
 
-  w = 600
+  w = 600     // keep aspect ratio 2-1 
   h = 300
   m = 50;
   width = this.w - this.MARGIN.left - this.MARGIN.right;
@@ -70,7 +70,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
       .attr('class', 'svg-container')
       .append('svg')
       .attr('preserveAspectRatio', 'xMinYMin meet')
-      .attr('viewBox', '0 0 600 300')
+      .attr('viewBox', `0 0 ${this.w} ${this.h}`)
       .classed('svg-content-responsive', true)
 
     // Clipping path to use in zoomable view
