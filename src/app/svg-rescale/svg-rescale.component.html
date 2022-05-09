@@ -1,2 +1,30 @@
-<button (click)="update(data)">Zone {{index + 1}}</button>
+<!--            
+//  ************ svg-rescale.component.html ****************************** //
+//                                                                         //
+//  A.I. DataPipes  - 05-08-2022 - Roberto Cannella                        //
+//  Rescalable SVG component which maintains various                       //
+//  cartesian axes asepcet ratio during resizing.                          //
+//                                                                         //
+//                                                                         //
+//  ********************************************************************** //
+
+-->
+
+<!-- MAIN TITLE -->
+
+<!-- <button (click)="update(data)">Zone {{index + 1}}</button> -->
+<!-- TOOLBAR -->
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <h4><span class="grey-text text-lighten-1 text-sm">{{title}}</span></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <app-chart-tool-bar (lineColorChangeEvent)="fromChildChangeColor($event)"></app-chart-tool-bar>
+        </div>
+    </div>
+</div>
+<!-- CHART -->
 <div class='app-rescale-svg-canvas'> </div>

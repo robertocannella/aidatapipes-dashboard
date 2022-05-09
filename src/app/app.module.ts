@@ -13,12 +13,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { ZoneTempsComponent } from './zone-temps/zone-temps.component';
 import { SvgRescaleComponent } from './svg-rescale/svg-rescale.component';
+import { ChartToolBarComponent } from './sgv/chart-tool-bar/chart-tool-bar.component';
 @NgModule({
   declarations: [
     AppComponent,
     OutdoorTempComponent,
     ZoneTempsComponent,
     SvgRescaleComponent,
+    ChartToolBarComponent,
   ],
   imports: [
     BrowserModule,

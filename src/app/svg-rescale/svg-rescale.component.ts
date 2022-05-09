@@ -3,6 +3,7 @@ import { AfterViewInit } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { Component, OnInit, Input } from '@angular/core';
+import { collectionSnapshots } from '@angular/fire/firestore';
 import * as d3 from 'd3';
 import { select, stratify } from 'd3';
 import { BehaviorSubject, map } from 'rxjs';
@@ -17,14 +18,16 @@ import { HydronicZone, RMTMPState } from '../zone-temps/HydronicZone';
 })
 export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
 
-  @Input() hydronicZone?: any;
+  @Input() inputData?: any;
   @Input() index?: any;
-  @ViewChild('chartEl') svgElement: any;
+  @Input('line-color') lineColor!: string
+  @Input() title?: string;
+  @Input('y-label') yLabel?: string;
 
 
-  MARGIN = { top: 30, right: 90, bottom: 50, left: 90 }
+  MARGIN = { top: 30, right: 60, bottom: 50, left: 20 }
   Y_AXIS_OBJ = {
-    label: 'Return Temperature  °F',
+    label: 'Temperature  °F',
     orientationLeft: false,
     ticks: 5
   }
@@ -56,14 +59,12 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   constructor(public outdoorService: OutdoorTempService) {
-
   }
   ngAfterViewInit(): void {
 
   }
 
   buildSVG() {
-
     this.svg = d3.select(`.app-svg-rescale-${this.index}`)
       .append('div')
       .attr('class', 'svg-container')
@@ -157,6 +158,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   update(data: any) {
+    console.log(this.inputData[0])
 
     // ******************** AXES DOMAIN CONFIGURATIONS ***********//
     // Scales domain configuratoon
@@ -205,7 +207,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
       .join()
       .datum(data)
       .attr("d", this.line)
-      .style("stroke", "cornflowerblue")
+      .style("stroke", this.lineColor)
       .style("stroke-width", 2)
       .style("fill", "none");
   }
@@ -227,27 +229,40 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
       .datum(this.data)
       .attr("d", this.line)
   }
-
+  fromChildChangeColor(newColor: any) {
+    this.lineColor = newColor;
+    const line = d3.select(`.${this.SELECTOR}-line${this.index}`)
+    line.style('stroke', this.lineColor)
+  }
+  changeLineColor(newColor: any) {
+    const line = d3.select(`.${this.SELECTOR}-line${this.index}`)
+    line.style('stroke', this.lineColor)
+  }
   // EXECTUTE UPDATE HERE
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['hydronicZone']) {
+    console.log(changes)
+    if (changes['lineColor'])
+      this.changeLineColor(changes['lineColor'].currentValue)
+    if (changes['inputData']) {
 
-      d3.select('div.app-rescale-svg-canvas')
+      const canvas = d3.select('div.app-rescale-svg-canvas')
+      canvas
         .attr('class', `app-svg-rescale-${this.index}`)
-      d3.select(`.${this.SELECTOR}-line`)
+
+      const line = d3.select(`.${this.SELECTOR}-line`)
+      line
         .attr('class', `${this.SELECTOR}-line${this.index}`)
       this.buildSVG();
 
       setTimeout(() => {
-        this.update(this.hydronicZone)
-        this.data = this.hydronicZone;
-      }, 500)
+        this.data = this.inputData;
+        this.update(this.inputData)
+      }, 1000)
     }
 
   }
 
   ngOnInit() {
-
   }
 
 }

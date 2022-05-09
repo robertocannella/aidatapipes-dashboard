@@ -7,7 +7,7 @@
 //                                                                      //
 //  System Type: Forced Hot Water (PUMP)                                //
 //                                                                      //
-//  Input types:                                                        //
+//  Input types:       (Derived from HyrodicZone Class)                 //
 //      -- Return temperature of zone                                   //
 //      -- Supply temperature of zone                                   //
 //      -- Primary room sensor (Temperature/Humidity)                   //
@@ -19,7 +19,6 @@
 
 
 //  ************ IMPORTS ********************************************** //
-import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
 import { AfterContentInit } from '@angular/core';
 import { HostListener } from '@angular/core';         // For window sizing
 import { Component, OnInit } from '@angular/core';    // Angular Core
@@ -83,6 +82,9 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
   system: any;
   dummyItems: any = []             // to add delay component generation
   timer: any = []                 // timer for delay
+  title = 'Zone '
+
+  lineColor: string = 'cornflowerblue'  // default chart line color
   //  ************ CONSTRUCTOR **************************************** //
   constructor(
     public outdoor: OutdoorTempService,
@@ -107,6 +109,10 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
     this.shared = this.fsData;
   }
 
+  changeLineColor() {
+    this.lineColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    console.log('Color change from parent. New color: ', this.lineColor)
+  }
   async ngOnInit() {
 
     const id = 'MEeFIW6GwQtv1X3Lo7Z2';

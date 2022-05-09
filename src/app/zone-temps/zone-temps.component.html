@@ -1,21 +1,32 @@
 <div class="container section">
     <div class="row">
         <div class="col hide-on-small-only m3 l3">
+            <a (click)="changeLineColor()" alt="Send Data to Children" class="waves-effect waves-light btn-dark">
+                <span><i class="material-icons">sky</i></span>
+            </a>
         </div>
         <div class="col s12 m6 l6 ">
-            <button data-activity="sensor1">
-                Zone Control
-                <!-- NEED INPUT OF ZONE  HERE -->
-            </button>
+            <h4 class="white-text darken-1">System Dash Board</h4>
         </div>
         <div class="col hide-on-small-only m3 l3"></div>
     </div>
     <div class="row">
         <div class="col s12 m12 l12" teal>
             <!-- NEED INPUT OF ZONE HERE -->
-
+            <div class="divider"></div>
+            <div class="row">
+                <div class="column s12"></div>
+            </div>
             <div *ngFor="let zone of zones ; let i = index">
-                <app-svg-rescale [index]="i" [hydronicZone]="zone.lineRT"></app-svg-rescale>
+
+                <app-svg-rescale [title]="title + (i +1)" [index]="i" [inputData]="zone.lineRT"
+                    [line-color]="lineColor">
+                </app-svg-rescale>
+
+                <div class="divider"></div>
+                <div class="row">
+                    <div class="column s12"></div>
+                </div>
             </div>
             <div> </div>
         </div>
