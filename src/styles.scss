@@ -1,6 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*
+*   Most colors derived from:
+*   https://material.io/design/color/dark-theme.html
+*   V3: https://m3.material.io/libraries/mdc-android/color-theming
+*/
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+.material-icons {
+  vertical-align: middle;
+  padding-left: .1em;
+  padding-right: .1em;
+  /*Change this to adjust the icon*/
+}
+
 .nav {
   background: #333
+}
+
+.divider {
+  opacity: .5;
 }
 
 button {
@@ -63,8 +82,11 @@ form span {
 }
 
 .tick line {
-  stroke: white;
+  stroke: #ccc;
+}
 
+.tick text {
+  font-size: 14px;
 }
 
 .x-axis path,
@@ -107,7 +129,7 @@ form span {
 
 .label {
   fill: teal;
-  font-size: 12pt;
+  font-size: 14pt;
   text-anchor: middle;
-  font-size: 8pt;
+  //font-size: 8pt;
 }
