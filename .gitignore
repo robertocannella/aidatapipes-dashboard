@@ -74,3 +74,5 @@ src/app/hydronic-zone.service.spec.ts
 src/app/services/hydronic-zone.service.spec.ts
 src/app/serivces/system.service.spec.ts
 src/app/services/system.service.spec.ts
+src/app/sgv/chart-tool-bar/chart-tool-bar.component.spec.ts
+src/app/sgv/chart-tool-bar/chart-tool-bar.component.scss
