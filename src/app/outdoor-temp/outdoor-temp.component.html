@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col hide-on-small-only m3 l4 teal"></div>
         <div class="col s12 m6 l4 ">
-            <button data-activity="sensor1" (click)="toggleChart()">
+            <button data-activity="sensor1">
                 Outdoor Temp
                 <!-- {{ (firebaseError) ? (currentTemperature$ | async | number :"1.2-2") : currentTemperature | number -->
                 {{ currentTemperature | number :"1.2-2"}} F
@@ -12,6 +12,9 @@
     </div>
     <div class="row">
         <div class="col s12 m12 l12">
+            <app-svg-rescale [y-label]="yLabel" [title]="title" [index]="index" [inputData]="temps"
+                [line-color]="lineColor">
+            </app-svg-rescale>
             <div class="app-outdoor-temp-canvas">
             </div>
 

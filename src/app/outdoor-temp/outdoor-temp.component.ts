@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 import { map } from 'rxjs';
 import { HostListener } from "@angular/core";
 import { AfterViewInit } from '@angular/core';
+import { collectionSnapshots } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-outdoor-temp',
@@ -16,11 +17,16 @@ export class OutdoorTempComponent implements OnInit {
   onResize(event: any) {
     this.innerWidth = window.innerWidth;
   }
-
+  index = 'outdoor-temp-1'
+  lineColor = '#17fddf'
+  temps: any[] = [];
+  title = 'Outdoor Sensor'
+  yLabel = 'Outdoor shade temperature'
   selector = 'app-outdoor-temp';
   currentTemperature$: any;
   currentTemperature: any;
   innerWidth: any;
+
 
   // graph attributes (not svg)
   data: any;
@@ -45,6 +51,11 @@ export class OutdoorTempComponent implements OnInit {
 
   constructor(public outdoor: OutdoorTempService) {
     // set backup tempreading
+    this.outdoor.getLastXOutdoorTemps(4).pipe(map((res: any) => {
+      res.forEach((item: any) => {
+        this.temps.push({ degF: item.degreesFahrenheit, timeStamp: item.timeStamp })
+      })
+    })).subscribe()
   }
 
   calcWidthMultiplier(innerWidth: number) {
@@ -185,13 +196,17 @@ export class OutdoorTempComponent implements OnInit {
   async ngOnInit() {
     // set innerWidth poperty upon initialization
     this.innerWidth = window.innerWidth;
-
     this.outdoor.getCurrentOutdoorTemperature().subscribe((data: any) => {
       // this.currentTemperature = data.degreesFahrenheit;
     });
+
+
+
+
+
     this.outdoor.getLastXOutdoorTemps(4).subscribe((data: any) => {
       //  Store all JSON Data for local filtering.
-      this.buildSVG(data)
+      //this.buildSVG(data)
 
     });
 
@@ -203,14 +218,25 @@ export class OutdoorTempComponent implements OnInit {
           this.currentTemperature = doc.degreesFahrenheit;
         });
       })
-      ).subscribe();;
+      ).subscribe();
+
+
   }
 
 
   toggleChart() {
     this.showChart = !this.showChart;
-    this.buildSVG(this.data);
+    //this.buildSVG(this.data);
+  }
+
+
+}
+export class OutdoorTemp {
+  timeStamp: Date;
+  degF: number;
+
+  constructor(timeStamp: Date, degF: number) {
+    this.timeStamp = timeStamp
+    this.degF = degF;
   }
 }
-
-
