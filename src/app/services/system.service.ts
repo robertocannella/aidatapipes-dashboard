@@ -4,6 +4,7 @@ import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { REFERENCE_PREFIX } from '@angular/compiler/src/render3/view/util';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,10 @@ export class SystemService {
             return object;
           })
         }));
+  }
+
+  getDaysAgo(date: Date, days: number) {
+    var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
+    return pastDate;
   }
 }

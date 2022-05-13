@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { AngularFirestore, QueryFn } from '@angular/fire/compat/firestore';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { firstValueFrom, Observable, throwError } from 'rxjs';
+import { ConstantPool } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,11 @@ export class OutdoorTempService {
   getCurrentOutdoorTemperature() {
     return this.http.get<any[]>(this.BASE_URL + 'getCurrentOutdoorTemp/');
   }
-  getLastXOutdoorTemps(value: number) {
-    return this.http.get<any[]>(this.BASE_URL + 'getLastXOutdoorTemps/' + value);
+
+  async getLastXOutdoorTemps(value: number) {
+    const $source = this.http.get<any[]>(this.BASE_URL + 'getLastXOutdoorTemps/' + value);
+    const firstResult = await firstValueFrom($source);
+
+    return firstResult;
   }
 }
