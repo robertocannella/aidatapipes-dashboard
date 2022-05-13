@@ -94,18 +94,6 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
   }
   async ngAfterContentInit() {
 
-
-    // const tstats = (await this.hydroZn.getTstatStates(0.5, this.hydronicZone)).pipe(map((res: any) => {
-
-    // }))
-    //const roomtemps = (await this.hydroZn.getByDate(0.5, this.hydronicZone)).subscribe((res: any) => {
-
-    //  this.fsData.push(res.rmTmpStates)
-    //})
-    // GET ROOM TEMPERTURES AS ARRAY ONLY 
-    // * this needs to change to object retrieval
-    //this.hydroZn.getByDat2(3).pipe( map(readings => {this.fsData.push(readings)})).subscribe();
-
     this.shared = this.fsData;
   }
 
@@ -126,12 +114,6 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
         }
       })
     });
-
-
-
-    //  this.outdoor.getLastXOutdoorTemps(4).pipe(map((resp: any) => {
-    //    this.data.push(resp)
-    //  })).subscribe();
   }
 
 }

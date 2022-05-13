@@ -16,7 +16,7 @@ import { HydronicZone, RMTMPState } from '../zone-temps/HydronicZone';
   templateUrl: './svg-rescale.component.html',
   styleUrls: ['./svg-rescale.component.scss']
 })
-export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
+export class SvgRescaleComponent implements OnInit {
 
   @Input() inputData?: any;
   @Input() index?: any;
@@ -60,9 +60,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(public outdoorService: OutdoorTempService) {
   }
-  ngAfterViewInit(): void {
 
-  }
 
   buildSVG() {
     this.svg = d3.select(`.app-svg-rescale-${this.index}`)
@@ -158,7 +156,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   update(data: any) {
-    console.log(this.inputData[0])
+    //console.log(this.inputData[0])
 
     // ******************** AXES DOMAIN CONFIGURATIONS ***********//
     // Scales domain configuratoon
@@ -200,7 +198,7 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
     this.yG.call(this.axisY);
 
 
-    console.log(`${this.SELECTOR}-line${this.index}`)
+    //console.log(`${this.SELECTOR}-line${this.index}`)
 
     this.view.append("path")
       .attr("class", `${this.SELECTOR}-line${this.index}`)
@@ -238,31 +236,23 @@ export class SvgRescaleComponent implements OnInit, OnChanges, AfterViewInit {
     const line = d3.select(`.${this.SELECTOR}-line${this.index}`)
     line.style('stroke', this.lineColor)
   }
-  // EXECTUTE UPDATE HERE
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
-    if (changes['lineColor'])
-      this.changeLineColor(changes['lineColor'].currentValue)
-    if (changes['inputData']) {
-
-      const canvas = d3.select('div.app-rescale-svg-canvas')
-      canvas
-        .attr('class', `app-svg-rescale-${this.index}`)
-
-      const line = d3.select(`.${this.SELECTOR}-line`)
-      line
-        .attr('class', `${this.SELECTOR}-line${this.index}`)
-      this.buildSVG();
-
-      setTimeout(() => {
-        this.data = this.inputData;
-        this.update(this.inputData)
-      }, 1000)
-    }
-
-  }
 
   ngOnInit() {
+    // Set the local data variable from parent component
+    this.data = this.inputData;
+
+    // Uniquelly identify this child's svg components
+    const canvas = d3.select('div.app-rescale-svg-canvas')
+    canvas
+      .attr('class', `app-svg-rescale-${this.index}`)
+
+    const line = d3.select(`.${this.SELECTOR}-line`)
+    line
+      .attr('class', `${this.SELECTOR}-line${this.index}`)
+
+    // Build the SVG and update
+    this.buildSVG();
+    this.update(this.inputData)
   }
 
 }

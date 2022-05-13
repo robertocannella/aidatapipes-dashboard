@@ -423,19 +423,6 @@ export class AppComponent implements OnInit, OnDestroy {
       })
       ).subscribe()
 
-    //   .get()
-    //   .then((snapshot: any) => {
-    //     console.log(snapshot)
-    //     var jsonvalue: any[] = [];
-    //     snapshot.forEach((docs: any) => {
-    //       jsonvalue.push(docs.data())
-    //     })
-    //     console.log(jsonvalue);
-    //     return;
-    //   }).catch((error: any) => {
-    //     console.log(error)
-    //   })
-    // );
   }
   getData() {
     // StateChanges allows use of added|modified|removed
