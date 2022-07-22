@@ -36,8 +36,8 @@ export class SvgRescaleComponent implements OnInit {
 
 
 
-  w = 600     // keep aspect ratio 2-1 
-  h = 300
+  w = 500     // keep aspect ratio 2-1 
+  h = 250
   m = 50;
   width = this.w - this.MARGIN.left - this.MARGIN.right;
   height = this.h - this.MARGIN.top - this.MARGIN.bottom;
@@ -141,6 +141,7 @@ export class SvgRescaleComponent implements OnInit {
       .attr("class", "label")
       .text(`${this.X_AXIS_LABEL}`)
       .attr("transform", `translate(${[(this.width / 2), this.labelPadding]})`)
+      .style("font-size", "30px");
 
 
     // Zoom configuration

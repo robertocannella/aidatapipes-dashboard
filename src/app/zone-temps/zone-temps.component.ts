@@ -45,7 +45,7 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
   //  ************ HOST EVENT LISTENERS ******************************* //
   //  
   //    
-  //  Note: To use 'window.innerWidth' porperty, set the 'minium-scale=1' 
+  //  Note: To use 'window.innerWidth' property, set the 'minium-scale=1' 
   //  attribute in meta tag.  The default is 'initial-scale=1'.  This will
   //  prevent the default zoom out behavior when switching from landscape
   //  to portrait mode on devices.
@@ -63,8 +63,8 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
   // SVG PATH (line) Declarations
   private lineRT: any;            // Return Temperature
   private lineSP: any;            // Supply Temperature
-  private lineRMTMP: any;         // Room Temperture     
-  private lineRMHUM: any;         // Room Humidiy
+  private lineRMTMP: any;         // Room Temperature     
+  private lineRMHUM: any;         // Room Humidity
 
   // SVG SHAPE Declarations
   private pumpActive: any;        // Pump active state
@@ -91,6 +91,7 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
     private systemService: SystemService) {
     this.hydronicZone = new HydronicZone();
 
+
   }
   async ngAfterContentInit() {
 
@@ -101,19 +102,37 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
     this.lineColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     console.log('Color change from parent. New color: ', this.lineColor)
   }
-  async ngOnInit() {
 
-    const id = 'MEeFIW6GwQtv1X3Lo7Z2';
+  getDaysAgo(date: Date, days: number) {
+    var pastDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
+    return pastDate;
+  }
+  ngOnInit() {
+
+
+    // const id = 'MEeFIW6GwQtv1X3Lo7Z2';  Filled July 2022
+    const id = 'y1vZECuehVYRTj2gOKdX'
     const regex = new RegExp('^zone')
 
     this.systemService.getSystemById(id).subscribe((res: any) => {
       this.zones = []; // zones array must be cleared during each update 
-      Object.keys(res[0]).filter((key: any) => {
+      Object.keys(res[0]).filter((key: any, index: any) => {
         if (regex.test(key)) {
+          //console.log(res['0'][key]['lineRT'], index)
           this.zones.push(res['0'][key])
         }
       })
-    });
+    })
+
+
+    // this.systemService.getSystemById(id).subscribe((res: any) => {
+    //   this.zones = []; // zones array must be cleared during each update 
+    //   Object.keys(res[0]).filter((key: any) => {
+    //     if (regex.test(key)) {
+    //       this.zones.push(res['0'][key])
+    //     }
+    //   })
+    // });
   }
 
 }
