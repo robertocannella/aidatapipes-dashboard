@@ -111,8 +111,8 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
 
 
     // const id = 'MEeFIW6GwQtv1X3Lo7Z2';  Filled July 2022
-    //  const id = 'y1vZECuehVYRTj2gOKdX'
-    const id = 'eGN8mcIR3h20qYytXx9J'
+    //  const id = 'y1vZECuehVYRTj2gOKdX' Filled August 24 2022
+    const id = 'test-id'
     const regex = new RegExp('^zone')
 
     this.systemService.getSystemById(id).subscribe((res: any) => {
