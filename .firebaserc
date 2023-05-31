@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "aidatapipes": {
+      "hosting": {
+        "ai-datapipes": [
+          "aidatapipes"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "aidatapipes"
+  }
+}
