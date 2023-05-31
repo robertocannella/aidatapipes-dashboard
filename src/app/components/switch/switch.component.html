@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col hide-on-small-only m3 l4 teal"></div>
         <div class="col s12 m6 l4 ">
-            <button data-activity="sprinkler" [disabled]="isButtonDisabled"  (click)="onToggle()" [ngClass]="status ? 'teal' : 'success'">
+            <button data-activity="sprinkler" [disabled]="isButtonDisabled"  (click)="onToggle()" [ngClass]="status ? 'teal pulse' : 'success'">
              {{ (status) ? 'Sprinkler on' : 'Sprinkler off'}}
             </button>
         </div>
