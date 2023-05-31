@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col hide-on-small-only m3 l4 teal"></div>
         <div class="col s12 m6 l4 ">
-            <button data-activity="sprinkler" (click)="onToggle()" [ngClass]="status ? 'teal' : 'success'">
-                Sprinkler {{status ? 'On' : 'Off'}}
+            <button data-activity="sprinkler" [disabled]="isButtonDisabled"  (click)="onToggle()" [ngClass]="status ? 'teal' : 'success'">
+             {{ (status) ? 'Sprinkler on' : 'Sprinkler off'}}
             </button>
         </div>
         <div class="col hide-on-small-only m3 l4 teal"></div>
