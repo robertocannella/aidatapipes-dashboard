@@ -1,0 +1,10 @@
+<div class="container section">
+    <div class="row">
+        <div class="col hide-on-small-only m3 l4 teal"></div>
+        <div class="col s12 m6 l4 ">
+            <button data-activity="sprinkler" (click)="onToggle()" [ngClass]="status ? 'teal' : 'success'">
+                Sprinkler {{status ? 'On' : 'Off'}}
+            </button>
+        </div>
+        <div class="col hide-on-small-only m3 l4 teal"></div>
+    </div>

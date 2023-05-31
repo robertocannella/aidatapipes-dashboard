@@ -7,7 +7,8 @@
 <div class="section center">
   <p class="grey-text flow-text">Machine learning for mechanical systems.</p>
 </div>
-
+<app-switch></app-switch>
+<div class="divider"></div>
 <app-outdoor-temp></app-outdoor-temp>
 <div class="divider"></div>
 
@@ -18,7 +19,7 @@
   <div class="row">
     <div class="col s12 l5">
       <p class="grey-text">
-        {{data.length}} samples since {{ currentLookBack.getMonth() + 1}}\{{currentLookBack.getDate() }}
+        <!-- {{data.length}} samples since {{ currentLookBack.getMonth() + 1}}\{{currentLookBack.getDate() }} -->
       </p>
       <button disabled data-activity="sensor1">Zone 1 Activiy (Beta)</button>
       <!-- <button data-activity="running">Running</button>
@@ -28,12 +29,5 @@
     <div class="col s12 l6 push-l1">
       <div class="canvas"></div>
     </div>
-  </div>
-  <div class="row">
-    <form class="col m6 push-m3">
-      <!-- <p class="flow-text grey-text center">How much <span>cycling</span> have you done today?</p> -->
-      <!-- <input class="grey-text" type="text" id="cycling" placeholder="Distance in km" /> -->
-      <p class="center pink-text error text-lighten-1"></p>
-    </form>
   </div>
 </div>

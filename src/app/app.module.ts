@@ -14,6 +14,7 @@ import { HttpClientJsonpModule } from '@angular/common/http';
 import { ZoneTempsComponent } from './zone-temps/zone-temps.component';
 import { SvgRescaleComponent } from './svg-rescale/svg-rescale.component';
 import { ChartToolBarComponent } from './sgv/chart-tool-bar/chart-tool-bar.component';
+import { SwitchComponent } from './components/switch/switch.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +22,7 @@ import { ChartToolBarComponent } from './sgv/chart-tool-bar/chart-tool-bar.compo
     ZoneTempsComponent,
     SvgRescaleComponent,
     ChartToolBarComponent,
+    SwitchComponent,
   ],
   imports: [
     BrowserModule,
