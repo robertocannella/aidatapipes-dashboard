@@ -1,20 +1,17 @@
+<app-navbar></app-navbar>
+
 <div class="nav z-depth-0">
   <div class="section center">
-    <h3 class="white-text center">A.I. DataPipes</h3>
+    <h5 class="white-text lg center">Machine learning for mechanical systems.</h5>
   </div>
 </div>
+<!-- <app-switch></app-switch>
+<div class="divider"></div> -->
+<router-outlet></router-outlet>
 
-<div class="section center">
-  <p class="grey-text flow-text">Machine learning for mechanical systems.</p>
-</div>
-<app-switch></app-switch>
-<div class="divider"></div>
-
-<app-outdoor-temp></app-outdoor-temp>
-<div class="divider"></div>
-
+<!--
 <app-zone-temps></app-zone-temps>
-<div class="divider"></div>
+<div class="divider"></div> -->
 
 <div class="container section">
   <div class="row">
@@ -22,7 +19,7 @@
       <p class="grey-text">
         <!-- {{data.length}} samples since {{ currentLookBack.getMonth() + 1}}\{{currentLookBack.getDate() }} -->
       </p>
-      <button disabled data-activity="sensor1">Zone 1 Activiy (Beta)</button>
+      <!-- <button disabled data-activity="sensor1">Zone 1 Activity (Beta)</button> -->
       <!-- <button data-activity="running">Running</button>
       <button data-activity="swimming">Swimming</button>
       <button data-activity="walking">Walking</button> -->

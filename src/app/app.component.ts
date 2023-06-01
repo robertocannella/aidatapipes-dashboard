@@ -71,10 +71,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // ************ DISABLE FIRESTORE READS ON DEVELOPMENT
     //
-    this.buildSVG();
-    let daysAgo = 1;
-    this.getTstatStatus(daysAgo);
-    this.getByDate(daysAgo);
+    // this.buildSVG();
+    // let daysAgo = 1;
+    // this.getTstatStatus(daysAgo);
+    // this.getByDate(daysAgo);
     //
     //
     // *****************************************************

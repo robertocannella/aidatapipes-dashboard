@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { SprinklerStatusService } from 'src/app/services/sprinkler-status.service';
+
 
 @Component({
   selector: 'app-switch',
@@ -10,10 +12,25 @@ export class SwitchComponent implements OnInit {
 
   status: boolean = false;
   isButtonDisabled: boolean = false;
-  constructor(private sprinklerService: SprinklerStatusService ) { }
+  subs$: Subscription = new Subscription()
+  
+  constructor(private sprinklerService: SprinklerStatusService ) { 
+    
+    this.subs$ = this.sprinklerService.getCurrentSprinklerStatus().subscribe((data: any)=>{
+      console.log(data)
+      this.status = data.isOn;
+    });
 
-  ngOnInit(): void {
   }
+  ngOnDestroy():void {
+    if (this.subs$) {
+      this.subs$.unsubscribe();
+    }
+  }
+  ngOnInit(): void {
+
+  }
+
   onToggle(): void {
     this.disableButton();
     this.status = !this.status;
@@ -28,3 +45,7 @@ export class SwitchComponent implements OnInit {
   }
 
 }
+function SprinklerOnDocument(error: any): void {
+  throw new Error('Function not implemented.');
+}
+

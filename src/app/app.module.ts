@@ -15,6 +15,18 @@ import { ZoneTempsComponent } from './zone-temps/zone-temps.component';
 import { SvgRescaleComponent } from './svg-rescale/svg-rescale.component';
 import { ChartToolBarComponent } from './sgv/chart-tool-bar/chart-tool-bar.component';
 import { SwitchComponent } from './components/switch/switch.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatToolbarModule } from '@angular/material/toolbar'
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
+import {MatMenuModule} from '@angular/material/menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeComponent } from './home/home.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +35,9 @@ import { SwitchComponent } from './components/switch/switch.component';
     SvgRescaleComponent,
     ChartToolBarComponent,
     SwitchComponent,
+    NavbarComponent,
+    DashboardComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +46,13 @@ import { SwitchComponent } from './components/switch/switch.component';
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     HttpClientModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    MatIconModule,
+    MatMenuModule,
+    MatToolbarModule,
+    FlexLayoutModule,
+    BrowserAnimationsModule,
+    MatButtonModule
 
   ],
   providers: [],

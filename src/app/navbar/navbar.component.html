@@ -1,0 +1,22 @@
+<mat-toolbar color="secondary">
+    <span>AI DataPipes</span>
+    <span class="spacer"></span>
+    <div fxHide.lt-sm>
+      <ul class="menu-list">
+        <li><button mat-button routerLink="/home">Home</button></li>
+        <li><button mat-button routerLink="/sprinkler">Sprinkler</button></li>
+        <li><button mat-button routerLink="/dashboard">Dashboard</button></li>
+      </ul>
+    </div>
+    <div fxShow.lt-md class="mobile-menu">
+      <button mat-icon-button color="accent" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/home">Home</button>
+        <button mat-menu-item routerLink="/sprinkler">Sprinkler</button>
+        <button mat-menu-item routerLink="/dashboard">Dashboard</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+  
