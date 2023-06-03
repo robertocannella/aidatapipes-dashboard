@@ -7,9 +7,10 @@ export function getCurrentWeek(): string {
     const firstOfMonth: Date = new Date(year, month, 1); // Create a new date object for the first day of the month
     const firstDayOfWeek: number = firstOfMonth.getDay(); // Get the day of the week for the first day of the month (0 - Sunday, 6 - Saturday)
   
-    const week: number = Math.ceil((date + firstDayOfWeek) / 7); // Calculate the current week by dividing the sum of the current day and first day of the week by 7
+    const week: number = Math.ceil((date ) / 7); // Calculate the current week by dividing the sum of the current day and first day of the week by 7
   
     return `${year}-${month}-${week}`;
+    
   }
   
  

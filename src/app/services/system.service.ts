@@ -19,6 +19,7 @@ export class SystemService {
       .pipe(
         map((actions: any) => {
           return actions.map((a: any) => {
+            console.log("A:", a)
             const object = a.payload.doc.data();
             object.id = a.payload.doc.id;
             return object;
