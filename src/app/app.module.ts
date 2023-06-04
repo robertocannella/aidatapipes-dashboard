@@ -20,11 +20,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { FormsModule } from '@angular/forms';
 import {MatMenuModule} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
+import { SchedulerComponent } from './scheduler/scheduler.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { HomeComponent } from './home/home.component';
     NavbarComponent,
     DashboardComponent,
     HomeComponent,
+    SchedulerComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +54,8 @@ import { HomeComponent } from './home/home.component';
     MatToolbarModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule
 
   ],
   providers: [],

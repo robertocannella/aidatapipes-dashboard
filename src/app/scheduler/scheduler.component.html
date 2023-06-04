@@ -1,0 +1,12 @@
+<div class="schedule-container">
+    <h2>{{ scheduleData.eventName }}</h2>
+    <div class="form-group">
+      <label for="onTime">On Time:</label>
+      <input type="datetime-local" id="onTime" [(ngModel)]="scheduleData.onTime" name="onTime">
+    </div>
+    <div class="form-group">
+      <label for="offTime">Off Time:</label>
+      <input type="datetime-local" id="offTime" [(ngModel)]="scheduleData.offTime" name="offTime">
+    </div>
+    <button (click)="updateSchedule()">Update Schedule</button>
+  </div>
