@@ -117,13 +117,13 @@ export class ZoneTempsComponent implements OnInit, AfterContentInit {
      // Example usage
   const currentWeek: string = getCurrentWeek();
   const id = currentWeek;
+  
     const regex = new RegExp('^zone')
 
     this.systemService.getSystemById(id).subscribe((res: any) => {
       this.zones = []; // zones array must be cleared during each update 
       Object.keys(res[0]).filter((key: any, index: any) => {
         if (regex.test(key)) {
-          //console.log(res['0'][key]['lineRT'], index)
           this.zones.push(res['0'][key])
         }
       })

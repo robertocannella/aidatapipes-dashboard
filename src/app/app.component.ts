@@ -69,12 +69,12 @@ export class AppComponent implements OnInit, OnDestroy {
   // }
   async ngOnInit() {
 
-    // ************ DISABLE FIRESTORRE READS ON DEVELOPMENT
+    // ************ DISABLE FIRESTORE READS ON DEVELOPMENT
     //
-    this.buildSVG();
-    let daysAgo = 1;
-    this.getTstatStatus(daysAgo);
-    this.getByDate(daysAgo);
+    // this.buildSVG();
+    // let daysAgo = 1;
+    // this.getTstatStatus(daysAgo);
+    // this.getByDate(daysAgo);
     //
     //
     // *****************************************************
