@@ -26,6 +26,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
+import {MatSelectModule} from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
+
 
 
 @NgModule({
@@ -40,6 +44,7 @@ import { SchedulerComponent } from './scheduler/scheduler.component';
     DashboardComponent,
     HomeComponent,
     SchedulerComponent,
+    ScheduleListComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +60,9 @@ import { SchedulerComponent } from './scheduler/scheduler.component';
     FlexLayoutModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule
 
   ],
   providers: [],

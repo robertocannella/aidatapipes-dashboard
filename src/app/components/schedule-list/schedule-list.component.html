@@ -1,0 +1,22 @@
+<table class="white-text">
+    <thead>
+      <tr class="teal-text">
+        <th>Event Name</th>
+        <th>On Time</th>
+        <th>Frequency</th>
+        <th>Duration</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+      <tr *ngFor="let scheduler of events">
+        <td>{{ scheduler.eventDetails.eventName }}</td>
+        <td>{{ scheduler.eventDetails.onTime }}</td>
+        <td>{{ scheduler.eventDetails.frequency }}</td>
+        <td>{{ scheduler.eventDetails.duration }}</td>
+        <td style="cursor: pointer;" (click)="onDelete(scheduler)">X</td>
+      </tr>
+    </tbody>
+  </table>
+  

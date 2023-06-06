@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SprinklerStatusService } from 'src/app/services/sprinkler-status.service';
+import { Scheduler, SchedulerGroup, SprinklerStatusService } from 'src/app/services/sprinkler-status.service';
 
 
 @Component({
@@ -13,11 +13,12 @@ export class SwitchComponent implements OnInit {
   status: boolean = false;
   isButtonDisabled: boolean = false;
   subs$: Subscription = new Subscription()
-  
+  subs2$: Subscription = new Subscription();
+  events: SchedulerGroup[] = [];
+
   constructor(private sprinklerService: SprinklerStatusService ) { 
     
     this.subs$ = this.sprinklerService.getCurrentSprinklerStatus().subscribe((data: any)=>{
-      console.log(data)
       this.status = data.isOn;
     });
 
@@ -26,9 +27,18 @@ export class SwitchComponent implements OnInit {
     if (this.subs$) {
       this.subs$.unsubscribe();
     }
+    if (this.subs2$) {
+      this.subs2$.unsubscribe();
+    }
   }
-  ngOnInit(): void {
-
+  ngOnInit() : void {
+    this.sprinklerService.getSchedules().subscribe((events)=>{
+      this.events = []
+        events.forEach(event => {
+          this.events.push(event as SchedulerGroup)
+        })
+    });
+    console.log(this.events)
   }
 
   onToggle(): void {
