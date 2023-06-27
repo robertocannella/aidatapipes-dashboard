@@ -1,3 +1,5 @@
+
+
 <div class="col s12 table-container">
     <table class="white-text">
         <thead>
@@ -16,9 +18,31 @@
             <td>{{ scheduler.eventDetails.onTime }}</td>
             <td>{{ scheduler.eventDetails.frequency }}</td>
             <td>{{ scheduler.eventDetails.duration }}</td>
-            <td style="cursor: pointer;" (click)="onDelete(scheduler)">X</td>
+            <td style="cursor: pointer;" (click)="onShowDialog(scheduler)">X</td>
+
+
+
         </tr>
+
         </tbody>
     </table>
 </div>
-  
+                  <!--==================== Confirmation =======================-->
+                  <div class="popup-container" *ngIf="showDialog">
+
+                    <!--============ Header ====================-->
+                    <div class="row popup-content" >
+                        <div class="step-header" >
+                            <h5 class="step-label">Are you sure?</h5> <span class="step-close teal-text" (click)="closeModal()">X</span>
+                        </div>
+
+                       <span class="white-text"> Delete {{ currentEvent!.eventDetails.eventName }} </span>
+
+                            <!-- Form Step navigation -->
+                            <div class="row step-actions" >
+                                <button  (click)="closeModal()">No</button>
+                                <button  (click)="onDelete(currentEvent)">Yes</button>
+                        </div>
+                    </div>
+                </div>
+                <!--===================== End Confirmation =======================-->

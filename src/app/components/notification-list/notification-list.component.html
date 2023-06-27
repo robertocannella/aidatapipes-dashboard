@@ -11,10 +11,29 @@
         <tr *ngFor="let user of users">
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td style="cursor: pointer;" (click)="onDelete(user)">X</td>
-
+            <td style="cursor: pointer;" (click)="onShowDialog(user)">X</td>
+ 
         </tr>
+
         </tbody>
     </table>
 </div>
-  
+                  <!--==================== Confirmation =======================-->
+                  <div class="popup-container" *ngIf="showDialog">
+
+                    <!--============ Header ====================-->
+                    <div class="row popup-content" >
+                        <div class="step-header" >
+                            <h5 class="step-label">Are you sure?</h5> <span class="step-close teal-text" (click)="closeModal()">X</span>
+                        </div>
+
+                       <span class="white-text">Delete {{ currentUser!.email }}</span> 
+
+                            <!-- Form Step navigation -->
+                            <div class="row step-actions" >
+                                <button  (click)="closeModal()">No</button>
+                                <button  (click)="onDelete(currentUser)">Yes</button>
+                        </div>
+                    </div>
+                </div>
+                <!--===================== End Confirmation =======================-->

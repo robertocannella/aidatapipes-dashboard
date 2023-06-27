@@ -9,15 +9,25 @@ import { NotificationService, NotificationUser } from 'src/app/services/notifica
 })
 export class NotificationListComponent {
   subs$ = new Subscription();
+  currentUser!: NotificationUser;
+  showDialog = false;
   @Input('users')users:NotificationUser[] = [];
 
-  constructor(private notificationService: NotificationService){
-        
+  constructor(private notificationService: NotificationService){}
+
+   onDelete(user: NotificationUser){
+    this.showDialog = false;
+
+    let users = this.users.filter((u:NotificationUser) => u.email != user.email)
+    this.notificationService.deleteUser(users)
 
   }
+   onShowDialog(user: NotificationUser){
+      this.showDialog = true;
+      this.currentUser = user;
 
-  onDelete(user: NotificationUser){
-    this.users = this.users.filter((u:NotificationUser) => user.email != u.email)
-    this.notificationService.deleteUser(this.users)
+   }
+  closeModal(){
+    this.showDialog = false;
   }
 }
