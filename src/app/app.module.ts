@@ -25,10 +25,12 @@ import {MatMenuModule} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
-import { SchedulerComponent } from './scheduler/scheduler.component';
+import { SchedulerComponent } from './forms/scheduler/scheduler.component';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
+import { NotificationListComponent } from './components/notification-list/notification-list.component';
+import { NotifierComponent } from './forms/notifier/notifier.component';
 
 
 
@@ -45,6 +47,8 @@ import { ScheduleListComponent } from './components/schedule-list/schedule-list.
     HomeComponent,
     SchedulerComponent,
     ScheduleListComponent,
+    NotificationListComponent,
+    NotifierComponent,
   ],
   imports: [
     BrowserModule,

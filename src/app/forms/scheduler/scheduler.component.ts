@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { Scheduler, SchedulerGroup, SprinklerStatusService } from '../services/sprinkler-status.service';
+import { Scheduler, SchedulerGroup, SprinklerStatusService } from '../../services/sprinkler-status.service';
 
 @Component({
   selector: 'app-scheduler',

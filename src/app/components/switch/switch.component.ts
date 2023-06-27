@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NotificationService, NotificationUser } from 'src/app/services/notification.service';
 import { Scheduler, SchedulerGroup, SprinklerStatusService } from 'src/app/services/sprinkler-status.service';
 
 
@@ -14,13 +15,19 @@ export class SwitchComponent implements OnInit {
   isButtonDisabled: boolean = false;
   subs$: Subscription = new Subscription()
   subs2$: Subscription = new Subscription();
+  subs3$: Subscription = new Subscription();
   events: SchedulerGroup[] = [];
+  users: NotificationUser[] = [];
 
-  constructor(private sprinklerService: SprinklerStatusService ) { 
+  constructor(private sprinklerService: SprinklerStatusService,private notificationService: NotificationService ) { 
     
     this.subs$ = this.sprinklerService.getCurrentSprinklerStatus().subscribe((data: any)=>{
       this.status = data.isOn;
     });
+    this.subs3$ = this.notificationService.getUserList().subscribe((data:any)=>{
+      this.users = data.email;
+    })
+    
 
   }
   ngOnDestroy():void {
@@ -32,13 +39,20 @@ export class SwitchComponent implements OnInit {
     }
   }
   ngOnInit() : void {
-    this.sprinklerService.getSchedules().subscribe((events)=>{
+    this.subs2$ = this.sprinklerService.getSchedules().subscribe((events)=>{
       this.events = []
         events.forEach(event => {
           this.events.push(event as SchedulerGroup)
         })
     });
-    console.log(this.events)
+    this.subs3$ = this.notificationService.getUserList().subscribe((data:any)=>{
+      this.users = []
+      if (data.email){
+        data.email.forEach((user:NotificationUser)=>{
+            this.users.push(user)
+        })
+      }
+    })
   }
 
   onToggle(): void {

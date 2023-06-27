@@ -53,16 +53,21 @@ exports.updateuser = onDocumentUpdated("delete/me", (event) => {
   // Get an object representing the document
   const newValue = event.data.after.data();
   const isOn = newValue.isOn.toString();
-  let emailString = "robertocannella@gmail.com"; // if no emails exist, we need to default to this one.
+  // if no emails exist, we need to default to this one.
+  let emailString = "robertocannella@gmail.com";
 
 
   // Get list of email address to notify
   const docRef = getFirestore().collection("mail").doc("to");
   docRef.get().then((doc)=>{
     if (doc.exists) {
-      const emails = doc.data().email;
+      const data = doc.data().email;
+      const emails = [];
+      data.forEach((user) =>{
+        emails.push(user.email);
+      });
       emailString = emails.join(", ");
-      logger.log("emails: ", emailString);
+      // logger.log("emails: ", emailString);
       // send the email
       getFirestore()
           .collection("mail").add({
