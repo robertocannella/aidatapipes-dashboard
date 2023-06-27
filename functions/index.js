@@ -49,7 +49,7 @@ exports.makeuppercase = onDocumentCreated("/messages/{documentId}", (event) => {
 // Listens for changes to the /sprinkler/isOn document
 // Sends an email notification with to the users listed under /mail/to
 
-exports.updateuser = onDocumentUpdated("delete/me", (event) => {
+exports.updateuser = onDocumentUpdated("sprinkler/main", (event) => {
   // Get an object representing the document
   const newValue = event.data.after.data();
   const isOn = newValue.isOn.toString();
