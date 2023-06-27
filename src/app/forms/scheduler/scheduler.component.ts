@@ -25,7 +25,7 @@ export class SchedulerComponent{
   minutes: string[] = this.convertToTwoDigits(Array.from({ length: 60 }, (_, index) => index + 1));
 
   addEvent = false;
-  amPm: 'AM' | 'PM'  = "AM"
+  amPm: 'AM' | 'PM' | null  = null
   step: number = 0;
   @Input('eventType')eventType:string = ''
   @Input('events')events!:SchedulerGroup[]
@@ -107,7 +107,10 @@ export class SchedulerComponent{
   convertToTwoDigits(numbers: number[]) {
     return numbers.map((num) => num.toString().padStart(2, '0'));
   }
-
+  resetForm(){
+    this.step=0;
+    this.scheduleBuilder.reset();
+  }
   // Getters for form validation
   get eventName () { return this.scheduleBuilder.get('eventName')}
   get frequency () { return this.scheduleBuilder.get('frequency')}

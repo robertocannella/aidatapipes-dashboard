@@ -36,6 +36,10 @@ constructor(private fb: FormBuilder, private notificationService: NotificationSe
    this.step = 0;
    this.notificationBuilder.reset();
   }
+  resetForm(){
+    this.step = 0;
+    this.notificationBuilder.reset();
+  }
   get name () { return this.notificationBuilder.get('name')}
   get email () { return this.notificationBuilder.get('email')}
 }

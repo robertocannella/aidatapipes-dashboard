@@ -28,7 +28,9 @@
 
     
       <div class="row stepper " *ngIf="step == 1">
-        <h5 class="step-label">Name your event.</h5>
+        <div class="step-header">
+          <h5 class="step-label">Name Your Event:</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
         <div class="input-field col s12 form-stepper">
           <input id="eventName" name="eventName" autofocus formControlName="eventName" type="text" class="validate step-input"/>
           <label for="eventName" >Event Name</label>
@@ -61,7 +63,9 @@
 
  <!-- STEP 2 ========================================-->
       <div class="row stepper" *ngIf="step == 2">
-          <h5 class="white-text">When do you want this event to run?</h5>
+        <div class="step-header">
+          <h5 class="step-label">When do you want this event to run?</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
         <div class="input-field col s12 option-box">
         <p>
             <input class="with-gap" name="frequency" type="radio" id="frequency-1" value="daily" formControlName="frequency" />
@@ -93,7 +97,9 @@
       </div>
 
       <div class="row stepper" *ngIf="step == 3">
-          <h5 class="white-text">What time do you want to run your event?</h5>
+        <div class="step-header">
+          <h5 class="step-label">What time do you want to run your event?</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
           <div class="form-stepper">
             <mat-form-field class="mat-form-field-options">
                 <mat-label>Hour</mat-label>
@@ -132,7 +138,9 @@
           </div>
       </div>
       <div class="row stepper" *ngIf="step == 4">
-        <h5 class="white-text">How long should your event run?</h5>
+        <div class="step-header">
+          <h5 class="step-label">How long should your event run?</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
       <div class="input-field col s12">
         <div class="row">
             <div class="col s6">
@@ -175,7 +183,9 @@
     
     </div>
       <div *ngIf="step == 5">
-        <h5 class="white-text">Review Your Event</h5>
+        <div class="step-header">
+          <h5 class="step-label">Review Your Event:</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
         <table class="white-text">
             <tbody>
         

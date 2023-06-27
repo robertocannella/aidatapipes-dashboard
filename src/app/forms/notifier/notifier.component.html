@@ -13,7 +13,9 @@
      
 
       <div class="row stepper " *ngIf="step == 1">
-        <h5 class="step-label">Add Notification:</h5>
+        <div class="step-header" >
+            <h5 class="step-label">Add Notification:</h5> <span class="step-close" (click)="resetForm()">X</span>
+        </div>
         <div class="input-field col s12 form-stepper">
           <input id="name" name="name" autofocus formControlName="name" type="text" class="validate step-input"/>
           <label for="name" >Name</label>

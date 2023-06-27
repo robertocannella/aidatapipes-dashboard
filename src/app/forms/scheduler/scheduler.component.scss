@@ -55,6 +55,16 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     justify-content: space-between;
   }
 
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step-close {
+  font-size: 1.5rem; 
+  cursor: pointer;
+}
 
 .step-label {
 font-weight: 400;
