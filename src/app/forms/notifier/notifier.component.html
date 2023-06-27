@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col s12 m4">
-        <button (click)="onAddNotification()" *ngIf="step == 0">Add Notification</button>
+        <button class="btn-small" (click)="onAddNotification()" *ngIf="step == 0">Add Notification</button>
     </div>
 </div>
 
@@ -54,7 +54,7 @@
           </div>
         <!-- Form Step navigation -->
         <div class="row step-actions" >
-                <button [disabled]="!notificationBuilder.valid" (click)="onSubmit()">Add</button>
+                <button class="btn-small" [disabled]="!notificationBuilder.valid" (click)="onSubmit()">Add</button>
           </div>
       </div>
     </form>
