@@ -43,7 +43,7 @@ export class SchedulerComponent{
     };
     // Perform any necessary logic with the updated schedule data
 
-    console.log('Updated schedule:', scheduleData);
+    // ('Updated schedule:', scheduleData);
     this.sprinklerService.setSchedule(scheduleData)
     this.step = 0;
     this.scheduleBuilder.reset();
@@ -99,7 +99,7 @@ export class SchedulerComponent{
    
         })
       }
-      console.log(control)
+      // console.log(control)
       return isUnique ? null : {isUnique: { value: control.value}}
     }
   }

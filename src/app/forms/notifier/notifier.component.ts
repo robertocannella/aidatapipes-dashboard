@@ -22,7 +22,7 @@ constructor(private fb: FormBuilder, private notificationService: NotificationSe
   })
   onAddNotification (){
     this.step = 1
-    console.log(this.users)
+    // console.log(this.users)
   }
   onSubmit(){
     let notificationData = {

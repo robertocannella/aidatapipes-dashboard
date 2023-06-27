@@ -72,7 +72,7 @@ export class SprinklerStatusService implements OnInit {
         if (doc.exists) {
           // Document exists, retrieve the value
           isOn = doc.data()!.isOn
-          console.log(isOn)
+          // console.log(isOn)
 
         } else {
           // Document does not exist
