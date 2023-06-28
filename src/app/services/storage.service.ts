@@ -26,7 +26,7 @@ export class StorageService {
     this.fileRef.putString(content)
    }
    getContents(): Promise<string> {
-    
+
     return new Promise<string>((resolve, reject) => {
       // Set up the subscription to the url
       this.subs$ = this.getUrl().subscribe((url) => {
@@ -56,7 +56,7 @@ export class StorageService {
           // Process the file contents
           this.fileContents = await  this.processFileBlob(response);
           // add the new contents to the object
-          this.fileContents += '\n' + content;
+          this.fileContents +=  content;
           // TODO: rename the existing file 
     
           // put the new file

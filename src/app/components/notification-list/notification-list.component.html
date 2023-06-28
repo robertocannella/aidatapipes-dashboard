@@ -18,22 +18,22 @@
         </tbody>
     </table>
 </div>
-                  <!--==================== Confirmation =======================-->
-                  <div class="popup-container" *ngIf="showDialog">
+<!--==================== Confirmation =======================-->
+<div class="popup-container" *ngIf="showDialog">
 
-                    <!--============ Header ====================-->
-                    <div class="row popup-content" >
-                        <div class="step-header" >
-                            <h5 class="step-label">Are you sure?</h5> <span class="step-close teal-text" (click)="closeModal()">X</span>
-                        </div>
+    <!--============ Header ====================-->
+    <div class="row popup-content" >
+        <div class="step-header" >
+            <h5 class="step-label">Are you sure?</h5> <span class="step-close teal-text" (click)="closeModal()">X</span>
+        </div>
 
-                       <span class="white-text">Delete {{ currentUser!.email }}</span> 
+        <span class="white-text">Delete {{ currentUser!.email }}</span> 
 
-                            <!-- Form Step navigation -->
-                            <div class="row step-actions" >
-                                <button  (click)="closeModal()">No</button>
-                                <button  (click)="onDelete(currentUser)">Yes</button>
-                        </div>
-                    </div>
-                </div>
-                <!--===================== End Confirmation =======================-->
+            <!-- Form Step navigation -->
+            <div class="row step-actions" >
+                <button  (click)="closeModal()">No</button>
+                <button  (click)="onDelete(currentUser)">Yes</button>
+        </div>
+    </div>
+</div>
+<!--===================== End Confirmation =======================-->

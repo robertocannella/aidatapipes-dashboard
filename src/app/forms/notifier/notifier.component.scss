@@ -45,7 +45,13 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     width: 85%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+  .btn-small {
+    margin-bottom: 0px;
+    border-radius: 0px;
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
 
+}
   /* Styles for the form stepper */
 .stepper {
     display: flex;

@@ -5,13 +5,16 @@
         <tr class="teal-text">
             <th>Time</th>
             <th>Event</th>
+            <th>Duration</th>
         </tr>
         </thead>
         <tbody>
-        <ng-container *ngFor="let item of fileAsArray; let i = index">
-            <tr [ngClass]="{ 'grey': i % 2 !== 0 }">
-              <td>{{ item }}</td>
-              <td>{{ item }}</td>
+        <ng-container *ngFor="let event of eventLog; let i = index">
+
+            <tr [ngClass]="{ 'grey darken-3': i % 2 !== 0 }">
+              <td>{{ event.Time }}</td>
+              <td>{{ event.Status === true ? 'On' : 'Off'  }}</td>
+              <td>{{ event.Duration ?  '--' : '--' }}</td>
             </tr>
           </ng-container>
         </tbody>
