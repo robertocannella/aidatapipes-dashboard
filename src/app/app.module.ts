@@ -8,6 +8,8 @@ import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientJsonpModule } from '@angular/common/http';
@@ -31,8 +33,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
 import { NotificationListComponent } from './components/notification-list/notification-list.component';
 import { NotifierComponent } from './forms/notifier/notifier.component';
-
-
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { ListlogComponent } from './components/listlog/listlog.component';
 
 @NgModule({
   declarations: [
@@ -49,11 +51,13 @@ import { NotifierComponent } from './forms/notifier/notifier.component';
     ScheduleListComponent,
     NotificationListComponent,
     NotifierComponent,
+    ListlogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     HttpClientModule,
@@ -66,7 +70,8 @@ import { NotifierComponent } from './forms/notifier/notifier.component';
     MatButtonModule,
     FormsModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
 
   ],
   providers: [],

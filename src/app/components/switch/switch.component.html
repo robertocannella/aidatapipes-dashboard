@@ -8,12 +8,17 @@
         </div>
         <div class="col hide-on-small-only m3 l4 teal"></div>
     </div>
-    <h4 class="white-text">Schedule</h4>
+    <h5 class="white-text">Schedule</h5>
     <app-schedule-list [events]="events"></app-schedule-list>
     <app-scheduler [events]="events" eventType="Sprinkler"></app-scheduler>
     <hr>
-    <h4 class="white-text">Notifications</h4>
+    <h5 class="white-text">Notifications</h5>
 
     <app-notification-list [users]="users"></app-notification-list>
     <app-notifier [users]="users"></app-notifier>
+
+    <hr>
+    <h5 class="white-text">Log</h5>
+    <app-listlog></app-listlog>
+    
 </div>

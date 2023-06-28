@@ -1,0 +1,19 @@
+
+  <div class="col s12 table-container">
+    <table class="white-text">
+        <thead>
+        <tr class="teal-text">
+            <th>Time</th>
+            <th>Event</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let item of fileAsArray; let i = index">
+            <tr [ngClass]="{ 'grey': i % 2 !== 0 }">
+              <td>{{ item }}</td>
+              <td>{{ item }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+    </table>
+</div>
