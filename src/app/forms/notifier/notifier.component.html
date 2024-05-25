@@ -1,0 +1,61 @@
+<div class="">
+    <div class="">
+        <button class="btn-small" (click)="onAddNotification()" *ngIf="step == 0"><span class="btn-plus-sign">Add</span></button>
+    </div>
+</div>
+
+<!--==================== Form =======================-->
+<div class="popup-container" *ngIf="step > 0">
+
+     <!-- STEP 1 ========================================-->
+  <div class="row popup-content" >
+    <form class="col s12" [formGroup]="notificationBuilder" ngNoForm>
+     
+
+      <div class="row stepper " *ngIf="step == 1">
+        <div class="step-header" >
+            <h5 class="step-label">Add Notification:</h5> <span class="step-close" (click)="resetForm()">X</span>
+        </div>
+        <div class="input-field col s12 form-stepper">
+          <input id="name" name="name" autofocus formControlName="name" type="text" class="validate step-input"/>
+          <label for="name" >Name</label>
+          
+        </div>
+        <!-- Validation eventName is required and must be the specified length. -->
+        <div class="message-warning" *ngIf="name?.invalid && name?.touched"  >
+            <ul class="collection" *ngIf="name?.errors?.['minlength']">
+                <li class="collection-item red lighten-3">
+                    Name must be at least 3 characters long.
+                </li>
+            </ul>
+            <ul class="collection" *ngIf="name?.errors?.['required']">
+                <li class="collection-item red lighten-3">
+                    Please enter a name.
+                </li>
+            </ul>
+        </div>
+        <div class="input-field col s12 form-stepper">
+            <input id="email" name="email" autofocus formControlName="email" type="text" class="validate step-input"/>
+            <label for="email" >Email</label>
+            
+          </div>
+          <!-- Validation eventName is required and must be the specified length. -->
+          <div class="message-warning" *ngIf="email?.invalid && email?.touched"  >
+              <ul class="collection" *ngIf="email?.errors?.['required']">
+                  <li class="collection-item red lighten-3">
+                      Please enter an email.
+                  </li>
+              </ul>
+              <ul class="collection" *ngIf="email?.errors?.['email']">
+                <li class="collection-item red lighten-3">
+                    Please enter valid email.
+                </li>
+            </ul>
+          </div>
+        <!-- Form Step navigation -->
+        <div class="row step-actions" >
+                <button class="btn-small" [disabled]="!notificationBuilder.valid" (click)="onSubmit()">Add</button>
+          </div>
+      </div>
+    </form>
+</div>

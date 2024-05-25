@@ -1,0 +1,13 @@
+.banner {
+    line-height: 0;
+}
+
+/* Styles for mobile devices */
+@media (max-width: 767px) {
+    body {
+      /* Example CSS properties to control zooming */
+      touch-action: manipulation; /* Disable double-tap-to-zoom on iOS */
+      overflow: hidden; /* Prevent horizontal scrolling */
+    }
+  }
+  

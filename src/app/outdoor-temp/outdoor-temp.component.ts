@@ -45,7 +45,7 @@ export class OutdoorTempComponent implements OnInit, OnDestroy {
     this.currentTemperature$ = this.outdoor.getCurrentOutdoorTemperatureFB()
       .pipe(map((res: any) => {
         res.forEach((change: any) => {
-          console.log(change.type)
+          // console.log(change.type)
           const doc = { ...change.payload.doc.data(), id: change.payload.doc.id } // create new object with ID field from firestore
           this.currentTemperature = doc.degreesFahrenheit;
           this.temps.unshift({ degF: doc.degreesFahrenheit, timeStamp: doc.timeStamp })  // 

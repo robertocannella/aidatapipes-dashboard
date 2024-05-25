@@ -1,0 +1,221 @@
+<!-- 
+<div class="schedule-container">
+    <h2 class="white-text">{{ eventType }}</h2>
+    <div class="form-group">
+      <label class="White-text" for="onTime">On Time:</label>
+      <input class="White-text" type="datetime-local" id="onTime" [(ngModel)]="scheduleData.onTime" name="onTime">
+    </div>
+    <div class="form-group">
+      <label class="White-text" for="offTime">Off Time:</label>
+      <input class="White-text" type="datetime-local" id="offTime" [(ngModel)]="scheduleData.offTime" name="offTime">
+    </div>
+    <button (click)="addSchedule()">Update Schedule</button>
+  </div> -->
+<div class="">
+    <div class="4">
+        <button class="btn-small" (click)="onAddEvent()" *ngIf="step == 0"><span class="btn-plus-sign">Add</span></button>
+    </div>
+</div>
+
+<!--==================== Form =======================-->
+<div class="popup-container" *ngIf="step > 0">
+
+
+ <!-- STEP 1 ========================================-->
+  <div class="row popup-content" *ngIf="addEvent">
+    <form class="col s12" [formGroup]="scheduleBuilder" ngNoForm>
+     
+
+    
+      <div class="row stepper " *ngIf="step == 1">
+        <div class="step-header">
+          <h5 class="step-label">Name Your Event:</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
+        <div class="input-field col s12 form-stepper">
+          <input id="eventName" name="eventName" autofocus formControlName="eventName" type="text" class="validate step-input"/>
+          <label for="eventName" >Event Name</label>
+          
+        </div>
+        <!-- Validation eventName is required and must be the specified length. -->
+        <div class="message-warning" *ngIf="eventName?.invalid && eventName?.touched"  >
+            <ul class="collection" *ngIf="eventName?.errors?.['minlength']">
+                <li class="collection-item red lighten-3">
+                    Name must be at least 4 characters long.
+                </li>
+            </ul>
+            <ul class="collection" *ngIf="eventName?.errors?.['isUnique']">
+                <li class="collection-item red lighten-3">
+                    Please enter unique a name. That name exists already.
+                </li>
+            </ul>
+            <ul class="collection" *ngIf="eventName?.errors?.['required']">
+                <li class="collection-item red lighten-3">
+                    Please enter a name.
+                </li>
+            </ul>
+        </div>
+        <!-- Form Step navigation -->
+        <div class="row step-actions" >
+                <button  (click)="prevStep(eventName)">Previous</button>
+                <button  *ngIf="step < 5" (click)="nextStep(eventName)">Next</button>
+          </div>
+      </div>
+
+ <!-- STEP 2 ========================================-->
+      <div class="row stepper" *ngIf="step == 2">
+        <div class="step-header">
+          <h5 class="step-label">When do you want this event to run?</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
+        <div class="input-field col s12 option-box">
+        <p>
+            <input class="with-gap" name="frequency" type="radio" id="frequency-1" value="daily" formControlName="frequency" />
+            <label for="frequency-1">Daily</label>
+          </p>
+          <p>
+            <input class="with-gap" name="frequency" type="radio" id="frequency-2" value="weekdays" formControlName="frequency" />
+            <label for="frequency-2">Weekdays</label>
+          </p>
+          <p>
+            <input class="with-gap" name="frequency" type="radio" id="frequency-3" value="weekends" formControlName="frequency"/>
+            <label for="frequency-3">Weekends</label>
+          </p>
+
+        </div>
+        <!-- Validation frequency is required -->
+        <div class="message-warning" *ngIf="frequency?.invalid && frequency?.touched"  >
+            <ul class="collection" *ngIf="frequency?.errors?.['required']">
+                <li class="collection-item red lighten-3">
+                    Please select an option.
+                </li>
+            </ul>
+        </div>
+        <!-- Form Step navigation -->
+        <div class="row step-actions" >
+                <button [disabled]="!isValid" *ngIf="step > 1" (click)="prevStep(frequency)">Previous</button>
+                <button  (click)="nextStep(frequency)">Next</button>
+          </div>
+      </div>
+
+      <div class="row stepper" *ngIf="step == 3">
+        <div class="step-header">
+          <h5 class="step-label">What time do you want to run your event?</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
+          <div class="form-stepper">
+            <mat-form-field class="mat-form-field-options">
+                <mat-label>Hour</mat-label>
+                <mat-select name="hour" (selectionChange)="onDateTimeChange(dateTime)" formControlName="hour">
+                    <mat-option *ngFor="let hour of hours" [value]="hour">{{ hour }}</mat-option>
+                </mat-select>
+              </mat-form-field >
+              <mat-form-field class="mat-form-field-options">
+                <mat-label>Minute</mat-label>
+                <mat-select name="minute" (selectionChange)="onDateTimeChange(dateTime)" formControlName="minute">
+                    <mat-option *ngFor="let minute of minutes" [value]="minute" >{{ minute }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            <mat-form-field class="mat-form-field-options">
+                <mat-label>AM/PM</mat-label>
+                <mat-select [(value)]="this.amPm" name="amPm" (selectionChange)="onDateTimeChange(dateTime)" formControlName="amPm">
+                  <mat-option value="AM">AM</mat-option>
+                  <mat-option value="PM">PM</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <input type="hidden" formControlName="dateTime" [value]='hour?.value + ":" + minute?.value + " " + ampm?.value'/>
+        <!-- Validation time is require-->
+            <div class="message-warning" *ngIf="dateTime?.invalid && dateTime?.touched"  >
+                <ul class="collection" *ngIf="dateTime?.errors?.['allowedValue']">
+                    <li class="collection-item red lighten-3">
+                        Please enter a valid start time.
+                    </li>
+                </ul>
+        </div>
+        <!-- Form Step navigation -->
+        <div class="row step-actions" >
+                <button  [disabled]="!isValid" (click)="prevStep(dateTime)">Previous</button>
+                <button  *ngIf="step < 5" (click)="nextStep(dateTime)">Next</button>
+          </div>
+          </div>
+      </div>
+      <div class="row stepper" *ngIf="step == 4">
+        <div class="step-header">
+          <h5 class="step-label">How long should your event run?</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
+      <div class="input-field col s12">
+        <div class="row">
+            <div class="col s6">
+                <p>
+                    <input class="with-gap" name="duration" type="radio" id="selectedData-duration-1" value="5" formControlName="duration"/>
+                    <label for="selectedData-duration-1">5 minutes</label>
+                  </p>
+                  <p>
+                    <input class="with-gap" name="duration" type="radio" id="selectedData-duration-2" value="10" formControlName="duration" />
+                    <label for="selectedData-duration-2">10 minutes</label>
+                  </p>
+            </div>
+            <div class="col sm6">
+                <p>
+                    <input class="with-gap" name="duration" type="radio" id="selectedData-duration-3" value="30" formControlName="duration" />
+                    <label for="selectedData-duration-3">30 minutes</label>
+                </p>
+                <p>
+                    <input class="with-gap" name="duration" type="radio" id="selectedData-duration-4" value="45" formControlName="duration" />
+                    <label for="selectedData-duration-4">45 minutes</label>
+                    </p>
+            </div>
+
+        </div>
+
+      </div>
+        <!-- Validation time is require-->
+        <div class="message-warning" *ngIf="duration?.invalid && duration?.touched"  >
+        <ul class="collection" *ngIf="duration?.errors?.['required']">
+            <li class="collection-item red lighten-3">
+                Please enter a valid duration.
+            </li>
+        </ul>
+    </div>
+    <!-- Form Step navigation -->
+    <div class="row step-actions" >
+            <button  [disabled]="!isValid" (click)="prevStep(duration)">Previous</button>
+            <button  *ngIf="step < 5" (click)="nextStep(duration)">Next</button>
+    </div>
+    
+    </div>
+      <div *ngIf="step == 5">
+        <div class="step-header">
+          <h5 class="step-label">Review Your Event:</h5> <span class="step-close" (click)="resetForm()">X</span>
+      </div>
+        <table class="white-text">
+            <tbody>
+        
+                <tr><td  class="teal-text"> Name</td><td>{{eventName?.value}}</td></tr>
+                <tr><td  class="teal-text">Frequency</td><td>{{frequency?.value | uppercase }}</td></tr>
+                <tr><td  class="teal-text">Start Time</td><td>{{hour?.value}}:{{minute?.value}} {{ ampm?.value | lowercase }}</td></tr>
+                <tr><td  class="teal-text">Duration</td><td>{{duration?.value}} minutes</td></tr>
+      
+            </tbody>
+          </table>
+            <p class="collection-item grey darken-3 white-text"></p>
+            <p class="collection-item grey darken-3 white-text"></p>
+            <p class="collection-item grey darken-3 white-text"></p>
+
+            <!-- Form Step navigation -->
+            <div class="row step-actions" >
+                <button  [disabled]="!isValid" (click)="prevStep(duration)">Previous</button>
+                <button  *ngIf="step > 4" (click)="addSchedule()">Add Event</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+  <!-- <div class="row" *ngIf="step >= 1" >
+    <div >
+        <button class="col s3" [disabled]="!isValid" *ngIf="step > 1" (click)="prev()">Previous</button>
+        <span class="col s1"  *ngIf="step > 1" ></span>
+        <button class="col s3"  *ngIf="step < 5" (click)="next()">Next</button>
+        <button class="col s3" *ngIf="step > 4" (click)="addSchedule()">Add Event</button>
+    </div>
+  </div> -->
+  

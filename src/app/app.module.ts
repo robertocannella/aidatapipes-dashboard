@@ -8,6 +8,8 @@ import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 import { OutdoorTempComponent } from './outdoor-temp/outdoor-temp.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientJsonpModule } from '@angular/common/http';
@@ -20,12 +22,19 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { FormsModule } from '@angular/forms';
 import {MatMenuModule} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
-
+import { SchedulerComponent } from './forms/scheduler/scheduler.component';
+import {MatSelectModule} from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ScheduleListComponent } from './components/schedule-list/schedule-list.component';
+import { NotificationListComponent } from './components/notification-list/notification-list.component';
+import { NotifierComponent } from './forms/notifier/notifier.component';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { ListlogComponent } from './components/listlog/listlog.component';
 
 @NgModule({
   declarations: [
@@ -38,11 +47,17 @@ import { HomeComponent } from './home/home.component';
     NavbarComponent,
     DashboardComponent,
     HomeComponent,
+    SchedulerComponent,
+    ScheduleListComponent,
+    NotificationListComponent,
+    NotifierComponent,
+    ListlogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
     HttpClientModule,
@@ -52,7 +67,11 @@ import { HomeComponent } from './home/home.component';
     MatToolbarModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    
 
   ],
   providers: [],

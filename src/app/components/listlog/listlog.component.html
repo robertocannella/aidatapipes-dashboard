@@ -1,0 +1,22 @@
+
+  <div class="col s12 table-container">
+    <table class="white-text">
+        <thead>
+        <tr class="teal-text">
+            <th>Time</th>
+            <th>Event</th>
+            <th>Duration</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let event of eventLog; let i = index">
+
+            <tr [ngClass]="{ 'grey darken-3': i % 2 !== 0 }">
+              <td>{{ event.Time }}</td>
+              <td>{{ event.Status === true ? 'On' : 'Off'  }}</td>
+              <td>{{ event.Duration ?  '--' : '--' }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+    </table>
+</div>

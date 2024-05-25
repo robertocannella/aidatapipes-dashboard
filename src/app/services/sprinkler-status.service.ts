@@ -1,9 +1,31 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AngularFirestore, } from '@angular/fire/compat/firestore';
-import { Observable, Subscription } from 'rxjs';
+import { QuerySnapshot } from 'firebase/firestore';
+import { Observable, Subscription, map } from 'rxjs';
 
 interface SprinklerOnDocument {
   isOn: boolean
+}
+export class Scheduler {
+    eventName?: string | null
+    onTime?: string | null
+    frequency?: string | null
+    hour?: string | null
+    minute?: string | null
+    ampm?: string | null
+    duration?: string | null
+  
+}
+export interface SchedulerGroup{
+  eventDetails :{
+    eventName?: string | null
+    onTime?: string | null
+    frequency?: string | null
+    hour?: string | null
+    minute?: string | null
+    ampm?: string | null
+    duration?: string | null
+  }
 }
 @Injectable({
   providedIn: 'root'
@@ -50,7 +72,7 @@ export class SprinklerStatusService implements OnInit {
         if (doc.exists) {
           // Document exists, retrieve the value
           isOn = doc.data()!.isOn
-          console.log(isOn)
+          // console.log(isOn)
 
         } else {
           // Document does not exist
@@ -63,5 +85,14 @@ export class SprinklerStatusService implements OnInit {
   }
   setSprinklerStatus(isOn: boolean){
     this.firestore.collection('sprinkler').doc('main').set({isOn: isOn});
+  }
+  setSchedule(schedule: Scheduler){
+    this.firestore.collection('sprinkler').doc('schedule').collection('events').doc(schedule.eventName as string).set({eventDetails: schedule})
+  }
+  getSchedules() {
+    return this.firestore.collection('sprinkler').doc('schedule').collection('events').valueChanges();
+  }
+  deleteEvent(event: SchedulerGroup){
+    return this.firestore.collection('sprinkler').doc('schedule').collection('events').doc(event.eventDetails.eventName as string).delete();
   }
 }
