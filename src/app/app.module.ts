@@ -35,6 +35,7 @@ import { NotificationListComponent } from './components/notification-list/notifi
 import { NotifierComponent } from './forms/notifier/notifier.component';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ListlogComponent } from './components/listlog/listlog.component';
+import { TimerComponent } from './forms/timer/timer.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ListlogComponent } from './components/listlog/listlog.component';
     NotificationListComponent,
     NotifierComponent,
     ListlogComponent,
+    TimerComponent,
   ],
   imports: [
     BrowserModule,

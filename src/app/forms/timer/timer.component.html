@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col hide-on-small-only m3 l4 "></div>
+    <div class="col s12 m6 l4 ">
+        <!-- <button data-activity="timer" [disabled]="isButtonDisabled" (click)="showTimer()"> -->
+        <button data-activity="timer" (click)="onInitTimer()">
+            Timer
+        </button>
+    </div>
+    <div class="col hide-on-small-only m3 l4 "></div>
+</div>
+
+
+<!--==================== Form =======================-->
+<div class="popup-container" *ngIf="step > 0">
+
+    <!-- STEP 1 ========================================-->
+    <div class="row popup-content">
+        <form class="col s12">
+            <div class="row stepper " *ngIf="step == 1">
+                <div class="step-header">
+                    <h5 class="step-label">Start Timer:</h5> <span class="step-close" (click)="closeForm()">X</span>
+                </div>
+
+                <div class="row step-actions">
+                    <button class="btn-small" (click)="onSubmit(15)">15 Minutes</button>
+                </div>
+                <div class="row step-actions">
+                    <button class="btn-small" (click)="onSubmit(20)">20 Minutes</button>
+                </div>
+                <div class="row step-actions">
+                    <button class="btn-small" (click)="onSubmit(30)">30 Minutes</button>
+                </div>
+                <div class="row step-actions">
+                    <button class="btn-small" (click)="onSubmit(40)">40 Minutes</button>
+                </div>
+            </div>
+
+            <!-- STEP 2 ==================================-->
+
+            <div class="row stepper " *ngIf="step == 2">
+                <div class="step-header">
+                    <h5 class="step-label">Timer started for {{ time }} minutes </h5> <span class="step-close"
+                        (click)="closeForm()">X</span>
+                </div>
+                <div class="row step-actions">
+                    <button class="btn-small" (click)="onOkay()">Okay</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
