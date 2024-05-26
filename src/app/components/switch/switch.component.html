@@ -2,12 +2,26 @@
     <div class="row">
         <div class="col hide-on-small-only m3 l4 teal"></div>
         <div class="col s12 m6 l4 ">
-            <button data-activity="sprinkler" [disabled]="isButtonDisabled"  (click)="onToggle()" [ngClass]="status ? 'teal pulse' : 'success'">
-             {{ (status) ? 'Sprinkler on' : 'Sprinkler off'}}
+            <button data-activity="sprinkler" [disabled]="isButtonDisabled" (click)="onToggle()"
+                [ngClass]="status ? 'teal pulse' : 'success'">
+                {{ (status) ? 'Sprinkler on' : 'Sprinkler off'}}
             </button>
         </div>
         <div class="col hide-on-small-only m3 l4 teal"></div>
     </div>
+
+    <!-- BEGIN Timer Button -->
+
+    <div class="row">
+        <div class="col hide-on-small-only m3 l4 "></div>
+        <div class="col s12 m6 l4 ">
+            <button data-activity="timer" [disabled]="isButtonDisabled" (click)="showTimer()">
+                Timer
+            </button>
+        </div>
+        <div class="col hide-on-small-only m3 l4 "></div>
+    </div>
+    <!-- END Timer Button-->
 
     <div class="list-header">
         <h5 class="white-text">Schedule</h5>
@@ -16,16 +30,16 @@
         </span>
     </div>
     <app-schedule-list [events]="events"></app-schedule-list>
-    
 
-    <div class="list-header" >
-        <h5 class="white-text">Notifications</h5>  
+
+    <div class="list-header">
+        <h5 class="white-text">Notifications</h5>
         <span>
             <app-notifier [users]="users"></app-notifier>
         </span>
     </div>
     <app-notification-list [users]="users"></app-notification-list>
-  
+
     <div class="list-header">
         <h5 class="white-text">Log</h5>
     </div>
