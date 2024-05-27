@@ -71,14 +71,37 @@ exports.updateuser = onDocumentUpdated("sprinkler/main", (event) => {
       });
       emailString = emails.join(", ");
       // logger.log("emails: ", emailString);
+
+      let formattedDate = "";
+      // Date Time formatting:
+      if (offTime) {
+        const date = offTime.toDate();
+
+        // Options to format the date in Eastern Time
+        const options = {
+          timeZone: "America/New_York",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true, // for 12-hour clock
+        };
+
+        // Format the date
+        formattedDate = date.toLocaleString("en-US", options);
+      }
+
       // Update the document.
       // There is an extension installed within firebase
       // console to mail all items in this document.
       // https://console.firebase.google.com/project/aidatapipes/extensions
+
       let body = (isOn ? "The Sprinkler is on." : "The Sprinkler is off");
       body += (offTime) ?
         `\n Timer is set for ${duration} minutes. 
-        \n\nThe Sprinkler will turn off at ${offTime.toDate()}` :
+        \n\nThe Sprinkler will turn off:  ${formattedDate}` :
         "";
 
       getFirestore()
