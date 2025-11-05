@@ -27,9 +27,7 @@
     "firebase-functions": "^4.4.1",
     "node": "^25.1.0",
     "rxfire": "^6.0.0",
-    "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.14.10"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.17",
@@ -45,6 +43,8 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "typescript": "~5.4.5"
+    "rxjs": "~7.8",
+    "typescript": "~5.2",
+    "zone.js": "^0.14.10"
   }
 }
