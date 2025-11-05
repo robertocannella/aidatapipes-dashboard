@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ai-datapipes:build:production"
+              "buildTarget": "ai-datapipes:build:production"
             },
             "development": {
-              "browserTarget": "ai-datapipes:build:development"
+              "buildTarget": "ai-datapipes:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ai-datapipes:build"
+            "buildTarget": "ai-datapipes:build"
           }
         },
         "test": {
